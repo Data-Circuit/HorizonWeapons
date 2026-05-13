@@ -4,8 +4,18 @@
   "version": "${version}",
   "name": "HorizonWeapons",
   "description": "",
-  "authors": [],
-  "contact": {},
+  "authors": [
+    "mineosaurjava",
+    {
+      "name": "olliejohnson",
+      "contact": {
+        "homepage": "http://oliverj.io"
+      }
+    }
+  ],
+  "contact": {
+    "sources": "https://github.com/Data-Circuit/HorizonWeapons"
+  },
   "license": "All-Rights-Reserved",
   "icon": "assets/horizonweapons/icon.png",
   "environment": "*",
@@ -27,5 +37,13 @@
     "fabricloader": ">=${loader_version}",
     "fabric-api": "*",
     "minecraft": "${minecraft_version}"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.github_releases": "https://github.com/Data-Circuit/HorizonWeapons/releases"
+      },
+      "update_checker": false
+    }
   }
 }
