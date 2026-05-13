@@ -1,0 +1,2 @@
+Copyright (c) 2026 Oliver Johnson (oliver@oliverj.io)
+All rights reserved.

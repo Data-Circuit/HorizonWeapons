@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "horizonweapons",
+  "version": "${version}",
+  "name": "HorizonWeapons",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/horizonweapons/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "io.github.datacircuit.horizonweapons.client.HorizonweaponsDataGenerator"
+    ],
+    "client": [
+      "io.github.datacircuit.horizonweapons.client.HorizonweaponsClient"
+    ],
+    "main": [
+      "io.github.datacircuit.horizonweapons.HorizonWeapons"
+    ]
+  },
+  "mixins": [
+    "horizonweapons.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
