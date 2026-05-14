@@ -5,17 +5,12 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -26,7 +21,7 @@ public abstract class LivingEntityMixin {
     public abstract boolean hasEffect(Holder<MobEffect> effect);
 
     @Shadow
-    public abstract @Nullable MobEffectInstance removeEffectNoUpdate(Holder<MobEffect> effect);
+    public abstract boolean removeEffect(Holder<MobEffect> effect);
 
     @Inject(method = "getArmorValue", at = @At("HEAD"), cancellable = true)
     public void getArmorValue(CallbackInfoReturnable<Integer> cir) {
@@ -61,18 +56,17 @@ public abstract class LivingEntityMixin {
     @Inject(method = "travel", at = @At("HEAD"))
     private void eliminateDrag(Vec3 input, CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
-        if (entity.hasEffect(HorizonWeaponsEffects.INERTIA)) {
-            if (entity.isFallFlying()) {
-                Vec3 velocity = entity.getDeltaMovement();
-                entity.setDeltaMovement(velocity.x * 1.01, velocity.y * 1.01, velocity.z * 1.01);
-            }
+        if (entity.hasEffect(HorizonWeaponsEffects.INERTIA) && entity.isFallFlying()) {
+            Vec3 velocity = entity.getDeltaMovement();
+            Vec3 newVelocity = velocity.scale(1.01);
+            entity.setDeltaMovement(newVelocity);
         }
     }
 
-    /*@Inject(method = "actuallyHurt", at = @At("TAIL"))
-    private void stripInertiaOnDamage(ServerLevel level, DamageSource source, float dmg, CallbackInfo ci) {
+    @Inject(method = "hurtServer", at = @At("TAIL"))
+    private void stripInertiaOnDamage(ServerLevel level, DamageSource source, float dmg, CallbackInfoReturnable<Boolean> cir) {
         if (this.hasEffect(HorizonWeaponsEffects.INERTIA)) {
             this.removeEffect(HorizonWeaponsEffects.INERTIA);
         }
-    }*/
+    }
 }
