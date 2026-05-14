@@ -64,7 +64,7 @@ public abstract class LivingEntityMixin {
         if (entity.hasEffect(HorizonWeaponsEffects.INERTIA)) {
             if (entity.isFallFlying()) {
                 Vec3 velocity = entity.getDeltaMovement();
-                entity.setDeltaMovement(velocity.x * 1.02, velocity.y * 1.02, velocity.z * 1.02);
+                entity.setDeltaMovement(velocity.x * 1.01, velocity.y * 1.01, velocity.z * 1.01);
             }
         }
     }
