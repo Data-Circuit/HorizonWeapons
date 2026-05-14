@@ -5,15 +5,15 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Collection;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
@@ -26,6 +26,17 @@ public abstract class LivingEntityMixin {
         if (this.hasEffect(HorizonWeaponsEffects.VITALITY))
             cir.setReturnValue(0);
     }
+
+    @Unique
+    private Vec3 removeAirResistance(Vec3 value) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+        if (entity.isFallFlying() && entity.hasEffect(HorizonWeaponsEffects.INERTIA)) {
+            double scale = 1.0D / 0.99D;
+            return new Vec3(value.x * scale, value.y, value.z * scale);
+        }
+        return value;
+    }
+
 
     @Inject(method = "hurtServer", at = @At("HEAD"), cancellable = true)
     public void hurtServer(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Boolean> cir) {
