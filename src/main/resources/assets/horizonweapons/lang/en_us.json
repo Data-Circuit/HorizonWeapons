@@ -23,5 +23,12 @@
   "item.minecraft.tipped_arrow.effect.anchor": "Arrow of Anchoring",
   "item.minecraft.tipped_arrow.effect.confusion": "Arrow of Confusion",
   "item.minecraft.tipped_arrow.effect.inertia": "Arrow of Inertia",
-  "item.minecraft.tipped_arrow.effect.vitality": "Arrow of Vitality"
+  "item.minecraft.tipped_arrow.effect.vitality": "Arrow of Vitality",
+
+  "death.attack.sonic_obliteration": "%s was sonically obliterated",
+  "death.attack.sonic_obliteration.player": "%s was sonically obliterated by %s",
+  "death.attack.divine_judgement": "%s received divine judgement",
+  "death.attack.divine_judgement.player": "%s received divine judgement from %s",
+  "death.attack.horizon_gravity": "%s experienced gravity",
+  "death.attack.horizon_gravity.player": "%s experienced gravity escaping %s"
 }
