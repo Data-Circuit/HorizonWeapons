@@ -5,7 +5,6 @@ import net.fabricmc.fabric.api.registry.FabricPotionBrewingBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
