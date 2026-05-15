@@ -25,10 +25,10 @@
   "item.minecraft.tipped_arrow.effect.inertia": "Arrow of Inertia",
   "item.minecraft.tipped_arrow.effect.vitality": "Arrow of Vitality",
 
-  "death.attack.sonic_obliteration": "%s was sonically obliterated",
-  "death.attack.sonic_obliteration.player": "%s was sonically obliterated by %s",
-  "death.attack.divine_judgement": "%s received divine judgement",
-  "death.attack.divine_judgement.player": "%s received divine judgement from %s",
-  "death.attack.horizon_gravity": "%s experienced gravity",
-  "death.attack.horizon_gravity.player": "%s experienced gravity escaping %s"
+  "death.attack.sonic_obliteration": "%1$s was sonically obliterated",
+  "death.attack.sonic_obliteration.player": "%1$s was sonically obliterated by %2$s",
+  "death.attack.divine_judgement": "%1$s received divine judgement",
+  "death.attack.divine_judgement.player": "%1$s received divine judgement from %2$s",
+  "death.attack.horizon_gravity": "%1$s experienced gravity",
+  "death.attack.horizon_gravity.player": "%1$s experienced gravity escaping %2$s"
 }
