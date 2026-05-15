@@ -7,5 +7,17 @@
   "item.horizonweapons.air_defence_helmet": "Air Defence Helmet",
   "item.horizonweapons.air_defence_chestplate": "Air Defence Chestplate",
   "item.horizonweapons.air_defence_leggings": "Air Defence Leggings",
-  "item.horizonweapons.air_defence_boots": "Air Defence Boots"
+  "item.horizonweapons.air_defence_boots": "Air Defence Boots",
+  "item.minecraft.potion.effect.anchor": "Potion of Anchoring",
+  "item.minecraft.potion.effect.confusion": "Potion of Confusion",
+  "item.minecraft.potion.effect.inertia": "Potion of Inertia",
+  "item.minecraft.potion.effect.vitality": "Potion of Vitality",
+  "item.minecraft.splash_potion.effect.anchor": "Splash Potion of Anchoring",
+  "item.minecraft.splash_potion.effect.confusion": "Splash Potion of Confusion",
+  "item.minecraft.splash_potion.effect.inertia": "Splash Potion of Inertia",
+  "item.minecraft.splash_potion.effect.vitality": "Splash Potion of Vitality",
+  "item.minecraft.lingering_potion.effect.anchor": "Lingering Potion of Anchoring",
+  "item.minecraft.lingering_potion.effect.confusion": "Lingering Potion of Confusion",
+  "item.minecraft.lingering_potion.effect.inertia": "Lingering Potion of Inertia",
+  "item.minecraft.lingering_potion.effect.vitality": "Lingering Potion of Vitality"
 }
