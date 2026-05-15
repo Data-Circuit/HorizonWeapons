@@ -60,7 +60,7 @@ public class HorizonWeaponsItems {
             .build();
 
     public static <T extends Item> T register(String name, Function<Item.Properties, T> itemFactory, Item.Properties settings) {
-        ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(HorizonWeapons.MOD_ID, name));
+        ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, HorizonWeapons.id(name));
 
         T item = itemFactory.apply(settings.setId(itemKey));
 

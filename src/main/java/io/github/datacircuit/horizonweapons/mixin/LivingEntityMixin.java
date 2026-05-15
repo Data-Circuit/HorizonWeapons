@@ -3,9 +3,12 @@ package io.github.datacircuit.horizonweapons.mixin;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsEffects;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,10 +26,13 @@ public abstract class LivingEntityMixin {
     @Shadow
     public abstract boolean removeEffect(Holder<MobEffect> effect);
 
+    @Shadow
+    public abstract double getAttributeValue(Holder<Attribute> attribute);
+
     @Inject(method = "getArmorValue", at = @At("HEAD"), cancellable = true)
     public void getArmorValue(CallbackInfoReturnable<Integer> cir) {
         if (this.hasEffect(HorizonWeaponsEffects.VITALITY))
-            cir.setReturnValue(0);
+            cir.setReturnValue(Mth.floor(this.getAttributeValue(Attributes.ARMOR)) / 2);
     }
 
     @Inject(method = "hurtServer", at = @At("HEAD"), cancellable = true)

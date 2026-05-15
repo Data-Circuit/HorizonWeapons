@@ -19,5 +19,9 @@
   "item.minecraft.lingering_potion.effect.anchor": "Lingering Potion of Anchoring",
   "item.minecraft.lingering_potion.effect.confusion": "Lingering Potion of Confusion",
   "item.minecraft.lingering_potion.effect.inertia": "Lingering Potion of Inertia",
-  "item.minecraft.lingering_potion.effect.vitality": "Lingering Potion of Vitality"
+  "item.minecraft.lingering_potion.effect.vitality": "Lingering Potion of Vitality",
+  "item.minecraft.tipped_arrow.effect.anchor": "Arrow of Anchoring",
+  "item.minecraft.tipped_arrow.effect.confusion": "Arrow of Confusion",
+  "item.minecraft.tipped_arrow.effect.inertia": "Arrow of Inertia",
+  "item.minecraft.tipped_arrow.effect.vitality": "Arrow of Vitality"
 }
