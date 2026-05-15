@@ -32,6 +32,39 @@ public class HorizonWeaponsPotions {
                                     3600
                             ))
             );
+    public static final Holder<Potion> STRONG_CONFUSION_POTION =
+            Registry.registerForHolder(
+                    BuiltInRegistries.POTION,
+                    HorizonWeapons.id("strong_confusion"),
+                    new Potion("confusion",
+                            new MobEffectInstance(
+                                    HorizonWeaponsEffects.CONFUSION,
+                                    3600,
+                                    1
+                            ))
+            );
+    public static final Holder<Potion> STRONGER_CONFUSION_POTION =
+            Registry.registerForHolder(
+                    BuiltInRegistries.POTION,
+                    HorizonWeapons.id("stronger_confusion"),
+                    new Potion("confusion",
+                            new MobEffectInstance(
+                                    HorizonWeaponsEffects.CONFUSION,
+                                    3600,
+                                    2
+                            ))
+            );
+    public static final Holder<Potion> STRONGEST_CONFUSION_POTION =
+            Registry.registerForHolder(
+                    BuiltInRegistries.POTION,
+                    HorizonWeapons.id("strongest_confusion"),
+                    new Potion("confusion",
+                            new MobEffectInstance(
+                                    HorizonWeaponsEffects.CONFUSION,
+                                    3600,
+                                    3
+                            ))
+            );
     public static final Holder<Potion> INERTIA_POTION =
             Registry.registerForHolder(
                     BuiltInRegistries.POTION,
@@ -69,6 +102,21 @@ public class HorizonWeaponsPotions {
                     Potions.WEAKNESS,
                     Items.POISONOUS_POTATO,
                     CONFUSION_POTION
+            );
+            builder.addMix(
+                    CONFUSION_POTION,
+                    Items.REDSTONE,
+                    STRONG_CONFUSION_POTION
+            );
+            builder.addMix(
+                    STRONG_CONFUSION_POTION,
+                    Items.REDSTONE,
+                    STRONGER_CONFUSION_POTION
+            );
+            builder.addMix(
+                    STRONGER_CONFUSION_POTION,
+                    Items.REDSTONE,
+                    STRONGEST_CONFUSION_POTION
             );
             builder.addMix(
                     Potions.SWIFTNESS,
