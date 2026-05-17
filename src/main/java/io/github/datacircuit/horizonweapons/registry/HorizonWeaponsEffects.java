@@ -1,10 +1,7 @@
 package io.github.datacircuit.horizonweapons.registry;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
-import io.github.datacircuit.horizonweapons.effect.AnchorEffect;
-import io.github.datacircuit.horizonweapons.effect.ConfusionEffect;
-import io.github.datacircuit.horizonweapons.effect.InertiaEffect;
-import io.github.datacircuit.horizonweapons.effect.VitalityEffect;
+import io.github.datacircuit.horizonweapons.effect.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -24,6 +21,9 @@ public class HorizonWeaponsEffects {
     public static final Holder<MobEffect> INERTIA =
             Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, HorizonWeapons.id("inertia"),
                     new InertiaEffect());
+    public static final Holder<MobEffect> ROT =
+            Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, HorizonWeapons.id("rot"),
+                    new RotEffect());
 
     public static void init() {}
 }
