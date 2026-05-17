@@ -1,21 +1,14 @@
 package io.github.datacircuit.horizonweapons.item.weapon;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
-import io.github.datacircuit.horizonweapons.effect.RotEffect;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsEffects;
-import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsPotions;
-import net.fabricmc.fabric.mixin.entity.event.effect.MobEffectMixin;
-import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Unit;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.AttackRange;
