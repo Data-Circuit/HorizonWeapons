@@ -33,7 +33,7 @@ public class BlackenedRootWeapon extends HorizonWeapon {
 
     @Override
     public void hurtEnemy(@NonNull ItemStack stack, @NonNull LivingEntity target, @NonNull LivingEntity attacker) {
-        target.addEffect(new MobEffectInstance(HorizonWeaponsEffects.ROT, 20, 0));
+        target.addEffect(new MobEffectInstance(HorizonWeaponsEffects.ROT, 400, 0));
     }
 
     protected BlackenedRootWeapon(ToolMaterial material, float attackDamage, float attackSpeed, Properties properties) {
