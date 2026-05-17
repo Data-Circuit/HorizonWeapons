@@ -21,6 +21,16 @@ public class HorizonWeaponsPotions {
                                     3600
                             ))
             );
+        public static final Holder<Potion> ROT_POTION =
+                Registry.registerForHolder(
+                        BuiltInRegistries.POTION,
+                        HorizonWeapons.id("rot"),
+                        new Potion("rot",
+                                new MobEffectInstance(
+                                        HorizonWeaponsEffects.ROT,
+                                        3600
+                                ))
+                );
     public static final Holder<Potion> CONFUSION_POTION =
             Registry.registerForHolder(
                     BuiltInRegistries.POTION,
