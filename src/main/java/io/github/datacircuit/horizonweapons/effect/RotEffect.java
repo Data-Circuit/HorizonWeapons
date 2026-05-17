@@ -41,7 +41,11 @@ public class RotEffect extends MobEffect {
                     .toList();
 
             HorizonWeapons.LOGGER.info(items.toString());
-
+/*
+            if (items.isEmpty()) {
+                return super.applyEffectTick(serverLevel, mob, amplification);
+            }
+*/
             int index = serverLevel.getRandom().nextInt(items.size());
 
             ItemStack stack = items.get(index);
