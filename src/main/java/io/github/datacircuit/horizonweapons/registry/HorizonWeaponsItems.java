@@ -1,6 +1,7 @@
 package io.github.datacircuit.horizonweapons.registry;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
+import io.github.datacircuit.horizonweapons.item.weapon.DeathbringerScytheWeapon;
 import io.github.datacircuit.horizonweapons.material.AirDefenceArmorMaterial;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
@@ -42,6 +43,12 @@ public class HorizonWeaponsItems {
             Item::new,
             new Item.Properties().humanoidArmor(AirDefenceArmorMaterial.INSTANCE, ArmorType.BOOTS)
                     .durability(ArmorType.BOOTS.getDurability(AirDefenceArmorMaterial.BASE_DURABILITY))
+    );
+
+    public static final Item DEATHBRINGER_SCYTHE = register(
+            "deathbringer_scythe",
+            DeathbringerScytheWeapon::new,
+            new Item.Properties()
     );
 
     public static final ResourceKey<@NotNull CreativeModeTab> HORIZON_WEAPONS_TAB_KEY = ResourceKey.create(
