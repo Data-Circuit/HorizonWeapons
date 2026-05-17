@@ -30,5 +30,7 @@
   "death.attack.divine_judgement": "%1$s received divine judgement",
   "death.attack.divine_judgement.player": "%1$s received divine judgement from %2$s",
   "death.attack.horizon_gravity": "%1$s experienced gravity",
-  "death.attack.horizon_gravity.player": "%1$s experienced gravity escaping %2$s"
+  "death.attack.horizon_gravity.player": "%1$s experienced gravity escaping %2$s",
+
+  "item.horizonweapons.deathbringer_scythe": "Deathbringer Scythe"
 }
