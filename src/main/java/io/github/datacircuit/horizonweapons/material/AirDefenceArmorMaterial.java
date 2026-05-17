@@ -29,7 +29,7 @@ public class AirDefenceArmorMaterial {
                     ArmorType.HELMET, 3,
                     ArmorType.CHESTPLATE, 8,
                     ArmorType.LEGGINGS, 6,
-                    ArmorType.BOOTS, 3
+                    ArmorType.BOOTS, 2
             ),
             5,
             SoundEvents.ARMOR_EQUIP_LEATHER,
