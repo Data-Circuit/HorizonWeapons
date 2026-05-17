@@ -56,7 +56,7 @@ public class HorizonWeaponsItems {
     );
 
     public static final CreativeModeTab HORIZON_WEAPONS_TAB = FabricCreativeModeTab.builder()
-            .icon(() -> new ItemStack(HorizonWeaponsItems.AIR_DEFENCE_HELMET))
+            .icon(() -> new ItemStack(HorizonWeaponsItems.DEATHBRINGER_SCYTHE))
             .title(Component.translatable("key.category.horizonweapons"))
             .displayItems((params, output) -> {
                 output.accept(AIR_DEFENCE_HELMET);
