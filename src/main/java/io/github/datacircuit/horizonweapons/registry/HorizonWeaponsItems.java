@@ -63,6 +63,7 @@ public class HorizonWeaponsItems {
                 output.accept(AIR_DEFENCE_CHESTPLATE);
                 output.accept(AIR_DEFENCE_LEGGINGS);
                 output.accept(AIR_DEFENCE_BOOTS);
+                output.accept(DEATHBRINGER_SCYTHE);
             })
             .build();
 
