@@ -5,10 +5,13 @@ import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsItems;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsPotions;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.Identifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HorizonWeapons implements ModInitializer {
 
     public static final String MOD_ID = "horizonweapons";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     @Override
     public void onInitialize() {
