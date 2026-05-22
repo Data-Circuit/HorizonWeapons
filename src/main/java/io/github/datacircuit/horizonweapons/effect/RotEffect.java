@@ -1,8 +1,7 @@
 package io.github.datacircuit.horizonweapons.effect;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
-import io.github.datacircuit.horizonweapons.item.weapon.HorizonWeapon;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
@@ -15,11 +14,12 @@ import org.jspecify.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class RotEffect extends MobEffect {
+
     public RotEffect() {
-        super(MobEffectCategory.HARMFUL, 0x75481d);}
+        super(MobEffectCategory.HARMFUL, 0x75481d);
+    }
 
     @Override
     public boolean shouldApplyEffectTickThisTick(int tickCount, int amplification) {
@@ -29,32 +29,51 @@ public class RotEffect extends MobEffect {
     @Override
     public boolean applyEffectTick(@NonNull ServerLevel serverLevel, @NonNull LivingEntity mob, int amplification) {
         if (mob instanceof ServerPlayer player) {
-            List<ItemStack> items = new ArrayList<>(player.getInventory().getNonEquipmentItems());
+            List<ItemStack> candidates = new ArrayList<>();
+
             for (EquipmentSlot slot : EquipmentSlot.values()) {
-                if (!items.contains(player.getInventory().equipment.get(slot)))
-                    items.add(player.getInventory().equipment.get(slot));
+                ItemStack stack = player.getItemBySlot(slot);
+                if (!stack.isEmpty()) {
+                    candidates.add(stack);
+                }
             }
-            items = items.stream()
+
+            List<ItemStack> items = candidates.stream()
                     .filter(Objects::nonNull)
-                    .filter(stack -> stack.getItem().getCreatorNamespace(stack).equals("minecraft"))
-                    .filter(stack -> stack.getComponents().has(DataComponents.WEAPON) || stack.getComponents().has(DataComponents.EQUIPPABLE))
+                    .filter(stack -> !stack.isEmpty())
+                    .filter(stack -> {
+                        // Safe namespace check via BuiltInRegistries
+                        String namespace = BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace();
+                        return "minecraft".equals(namespace);
+                    })
+                    .filter(stack -> stack.getMaxDamage() > 0)
                     .toList();
 
-            HorizonWeapons.LOGGER.info(items.toString());
-/*
+            HorizonWeapons.LOGGER.info("Rot candidates found: {}", items.size());
+
             if (items.isEmpty()) {
                 return super.applyEffectTick(serverLevel, mob, amplification);
             }
-*/
+
             int index = serverLevel.getRandom().nextInt(items.size());
+            ItemStack targetStack = items.get(index);
+            HorizonWeapons.LOGGER.info("Rotting item: {}", targetStack);
 
-            ItemStack stack = items.get(index);
+            EquipmentSlot breakSlot = getEquipmentSlotForStack(player, targetStack);
 
-            HorizonWeapons.LOGGER.info(stack.toString());
-
-            stack.applyDamage(stack.getDamageValue() - 3, player, item -> {});
+            targetStack.hurtAndBreak(3, serverLevel, player, item -> {
+                player.onEquippedItemBroken(item, breakSlot);
+            });
         }
-
         return super.applyEffectTick(serverLevel, mob, amplification);
+    }
+
+    private EquipmentSlot getEquipmentSlotForStack(ServerPlayer player, ItemStack stack) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (player.getItemBySlot(slot) == stack) {
+                return slot;
+            }
+        }
+        return EquipmentSlot.MAINHAND;
     }
 }
