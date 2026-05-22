@@ -36,6 +36,8 @@
   "death.attack.divine_judgement.player": "%1$s received divine judgement from %2$s",
   "death.attack.horizon_gravity": "%1$s experienced gravity",
   "death.attack.horizon_gravity.player": "%1$s experienced gravity escaping %2$s",
+  "death.attack.true_damage": "%1$s felt true damage",
+  "death.attack.true_damage.player": "%1$s was split open by %2$s through true damage",
 
   "item.horizonweapons.deathbringer_scythe": "Deathbringer Scythe",
   "item.horizonweapons.blackened_root": "Blackened Root",

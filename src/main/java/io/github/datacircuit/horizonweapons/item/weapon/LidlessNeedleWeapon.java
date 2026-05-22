@@ -43,7 +43,6 @@ public class LidlessNeedleWeapon extends HorizonWeapon {
                     attacker
             );
 
-            // Deals exactly 7.0 true damage (3.5 hearts) straight through all defenses
             target.hurtServer(serverLevel, trueDamageSource, 7.f);
         }
 
