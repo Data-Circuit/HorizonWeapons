@@ -1,5 +1,6 @@
 package io.github.datacircuit.horizonweapons;
 
+import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsDamageTypes;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsEffects;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsItems;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsPotions;

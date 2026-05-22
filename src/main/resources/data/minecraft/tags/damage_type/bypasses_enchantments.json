@@ -1,6 +1,7 @@
 {
   "values": [
-    "horizonweapons:divine_judgement"
+    "horizonweapons:divine_judgement",
+    "horizonweapons:true_damage"
   ],
   "replace": false
 }

@@ -3,6 +3,7 @@ package io.github.datacircuit.horizonweapons.registry;
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
 import io.github.datacircuit.horizonweapons.item.weapon.BlackenedRootWeapon;
 import io.github.datacircuit.horizonweapons.item.weapon.DeathbringerScytheWeapon;
+import io.github.datacircuit.horizonweapons.item.weapon.LidlessNeedleWeapon;
 import io.github.datacircuit.horizonweapons.material.AirDefenceArmorMaterial;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
@@ -55,6 +56,11 @@ public class HorizonWeaponsItems {
             BlackenedRootWeapon::new,
             new Item.Properties()
     );
+    public static final Item LIDLESS_NEEDLE = register(
+            "lidless_needle",
+            LidlessNeedleWeapon::new,
+            new Item.Properties()
+    );
     public static final ResourceKey<@NotNull CreativeModeTab> HORIZON_WEAPONS_TAB_KEY = ResourceKey.create(
             BuiltInRegistries.CREATIVE_MODE_TAB.key(), Identifier.fromNamespaceAndPath(HorizonWeapons.MOD_ID, "creative_tab")
     );
@@ -68,6 +74,7 @@ public class HorizonWeaponsItems {
                 output.accept(AIR_DEFENCE_BOOTS);
                 output.accept(DEATHBRINGER_SCYTHE);
                 output.accept(BLACKENED_ROOT);
+                output.accept(LIDLESS_NEEDLE);
             })
             .build();
 
