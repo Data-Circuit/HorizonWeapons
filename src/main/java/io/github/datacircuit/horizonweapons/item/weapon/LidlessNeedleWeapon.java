@@ -28,7 +28,7 @@ public class LidlessNeedleWeapon extends HorizonWeapon {
     );
 
     public LidlessNeedleWeapon(Properties properties) {
-        super(MATERIAL, 0.f, -1f, properties.component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
+        super(MATERIAL, 0.f, -2.2f, properties.component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
                 .component(DataComponents.ATTACK_RANGE, new AttackRange(0.f, 3.5f, 0.f, 3.5f, .3f, 1.f)));
     }
 
