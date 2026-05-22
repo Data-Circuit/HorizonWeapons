@@ -43,6 +43,7 @@ public abstract class LivingEntityMixin {
             Level 1 = 25%
             Level 2 = 30%
             Level 3 = 35%
+            Level 4>= = 100%
              */
             int amplifier = entity.getEffect(HorizonWeaponsEffects.CONFUSION).getAmplifier();
 
