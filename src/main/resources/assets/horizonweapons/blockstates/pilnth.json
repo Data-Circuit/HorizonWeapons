@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": {
+      "model": {
+        "type": "minecraft:model",
+        "model": "horizonweapons:block/pilnth"
+      }
+    }
+  }
+}
