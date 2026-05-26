@@ -2,14 +2,22 @@ package io.github.datacircuit.horizonweapons.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.datacircuit.horizonweapons.block.entity.PlinthBlockEntity;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.Lightmap;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.state.LightmapRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.network.chat.Style;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
@@ -42,7 +50,9 @@ public class PlinthBlockEntityRenderer implements BlockEntityRenderer<PlinthBloc
         poseStack.translate(0.5, 1.15, 0.5);
         poseStack.scale(.5f, .5f, .5f);
 
-        state.itemStackRenderState.submit(poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        if (state.getStack() != ItemStack.EMPTY) {
+            state.itemStackRenderState.submit(poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        }
 
         poseStack.popPose();
     }

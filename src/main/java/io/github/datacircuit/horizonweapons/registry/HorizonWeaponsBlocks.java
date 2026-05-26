@@ -39,4 +39,6 @@ public class HorizonWeaponsBlocks {
     private static ResourceKey<Item> keyOfItem(String name) {
         return ResourceKey.create(Registries.ITEM, HorizonWeapons.id(name));
     }
+
+    public static void init() {}
 }

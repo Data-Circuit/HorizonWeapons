@@ -2,8 +2,8 @@
   "format_version": "26.1.2",
   "texture_size": [64, 64],
   "textures": {
-    "0": "block/pilnth",
-    "particle": "block/pilnth"
+    "0": "horizonweapons:block/plinth",
+    "particle": "horizonweapons:block/plinth"
   },
   "elements": [
     {

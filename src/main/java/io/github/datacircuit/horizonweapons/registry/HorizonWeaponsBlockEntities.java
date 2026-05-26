@@ -22,4 +22,6 @@ public class HorizonWeaponsBlockEntities {
         Identifier id = HorizonWeapons.id(name);
         return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, FabricBlockEntityTypeBuilder.<T>create(entityFactory, blocks).build());
     }
+
+    public static void init() {}
 }

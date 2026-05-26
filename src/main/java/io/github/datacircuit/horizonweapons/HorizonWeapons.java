@@ -1,9 +1,6 @@
 package io.github.datacircuit.horizonweapons;
 
-import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsDamageTypes;
-import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsEffects;
-import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsItems;
-import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsPotions;
+import io.github.datacircuit.horizonweapons.registry.*;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
@@ -19,6 +16,8 @@ public class HorizonWeapons implements ModInitializer {
         HorizonWeaponsEffects.init();
         HorizonWeaponsItems.init();
         HorizonWeaponsPotions.init();
+        HorizonWeaponsBlocks.init();
+        HorizonWeaponsBlockEntities.init();
     }
 
     public static Identifier id(String name) {
