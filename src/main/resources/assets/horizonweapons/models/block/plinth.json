@@ -1,9 +1,8 @@
 {
-  "format_version": "26.1.2",
   "texture_size": [128, 128],
   "textures": {
-    "0": "block/plinth",
-    "particle": "block/plinth"
+    "0": "horizonweapons:block/plinth",
+    "particle": "horizonweapons:block/plinth"
   },
   "elements": [
     {
@@ -90,7 +89,7 @@
       "scale": [0.33, 0.33, 0.33]
     },
     "gui": {
-      "rotation": [38.29, -15.14, 35.14],
+      "rotation": [22.5, 45, 0],
       "scale": [0.66, 0.66, 0.66]
     },
     "head": {
