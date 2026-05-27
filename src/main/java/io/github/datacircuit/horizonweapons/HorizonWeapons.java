@@ -18,6 +18,7 @@ public class HorizonWeapons implements ModInitializer {
         HorizonWeaponsPotions.init();
         HorizonWeaponsBlocks.init();
         HorizonWeaponsBlockEntities.init();
+        HorizonWeaponsParticles.init();
     }
 
     public static Identifier id(String name) {
