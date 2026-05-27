@@ -2,5 +2,12 @@
   "parent": "minecraft:item/handheld",
   "textures": {
     "layer0": "horizonweapons:item/lidless_needle"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "scale": [1.5, 1.5, 1.5],
+      "rotation": [90, -90, 95],
+      "translation": [0, 7, 7]
+    }
   }
 }
