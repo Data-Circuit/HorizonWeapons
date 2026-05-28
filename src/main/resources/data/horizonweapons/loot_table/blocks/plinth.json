@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "horizonweaponse:plinth"
+          "name": "horizonweapons:plinth"
         }
       ],
       "conditions": [
