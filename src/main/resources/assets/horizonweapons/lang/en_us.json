@@ -29,6 +29,7 @@
   "item.minecraft.tipped_arrow.effect.inertia": "Arrow of Inertia",
   "item.minecraft.tipped_arrow.effect.vitality": "Arrow of Vitality",
   "item.minecraft.tipped_arrow.effect.rot": "Arrow of Rot",
+  "item.horizonweapons.plinth": "Plinth",
 
   "death.attack.sonic_obliteration": "%1$s was sonically obliterated",
   "death.attack.sonic_obliteration.player": "%1$s was sonically obliterated by %2$s",

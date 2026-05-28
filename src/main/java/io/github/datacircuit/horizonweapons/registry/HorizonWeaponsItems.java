@@ -1,6 +1,7 @@
 package io.github.datacircuit.horizonweapons.registry;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
+import io.github.datacircuit.horizonweapons.block.PlinthBlock;
 import io.github.datacircuit.horizonweapons.item.weapon.BlackenedRootWeapon;
 import io.github.datacircuit.horizonweapons.item.weapon.DeathbringerScytheWeapon;
 import io.github.datacircuit.horizonweapons.item.weapon.LidlessNeedleWeapon;
@@ -65,7 +66,7 @@ public class HorizonWeaponsItems {
             BuiltInRegistries.CREATIVE_MODE_TAB.key(), Identifier.fromNamespaceAndPath(HorizonWeapons.MOD_ID, "creative_tab")
     );
     public static final CreativeModeTab HORIZON_WEAPONS_TAB = FabricCreativeModeTab.builder()
-            .icon(() -> new ItemStack(HorizonWeaponsItems.DEATHBRINGER_SCYTHE))
+            .icon(() -> new ItemStack(HorizonWeaponsItems.LIDLESS_NEEDLE))
             .title(Component.translatable("key.category.horizonweapons"))
             .displayItems((params, output) -> {
                 output.accept(AIR_DEFENCE_HELMET);
