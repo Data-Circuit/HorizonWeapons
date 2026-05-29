@@ -2,7 +2,7 @@
   "texture_size": [128, 128],
   "textures": {
     "0": "horizonweapons:block/plinth",
-    "particle": "horizonweapons:block/plinth"
+    "particle": "minecraft:block/sandstone"
   },
   "elements": [
     {
