@@ -2,6 +2,8 @@ package io.github.datacircuit.horizonweapons;
 
 import io.github.datacircuit.horizonweapons.registry.*;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.item.v1.ItemComponentTooltipProviderRegistry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ public class HorizonWeapons implements ModInitializer {
         HorizonWeaponsBlocks.init();
         HorizonWeaponsBlockEntities.init();
         HorizonWeaponsParticles.init();
+        HorizonWeaponsDataComponents.init();
     }
 
     public static Identifier id(String name) {

@@ -2,6 +2,8 @@ package io.github.datacircuit.horizonweapons.registry;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
 import io.github.datacircuit.horizonweapons.block.PlinthBlock;
+import io.github.datacircuit.horizonweapons.item.BellOfGiving;
+import io.github.datacircuit.horizonweapons.item.components.tooltip.BellOfGivingActiveTooltip;
 import io.github.datacircuit.horizonweapons.item.weapon.BlackenedRootWeapon;
 import io.github.datacircuit.horizonweapons.item.weapon.DeathbringerScytheWeapon;
 import io.github.datacircuit.horizonweapons.item.weapon.LidlessNeedleWeapon;
@@ -62,6 +64,13 @@ public class HorizonWeaponsItems {
             LidlessNeedleWeapon::new,
             new Item.Properties()
     );
+    public static final Item BELL_OF_GIVING = register(
+            "bell_of_giving",
+            BellOfGiving::new,
+            new Item.Properties()
+                    .component(HorizonWeaponsDataComponents.BELL_OF_GIVING, new BellOfGivingActiveTooltip(false))
+    );
+
     public static final ResourceKey<@NotNull CreativeModeTab> HORIZON_WEAPONS_TAB_KEY = ResourceKey.create(
             BuiltInRegistries.CREATIVE_MODE_TAB.key(), Identifier.fromNamespaceAndPath(HorizonWeapons.MOD_ID, "creative_tab")
     );
@@ -76,6 +85,8 @@ public class HorizonWeaponsItems {
                 output.accept(DEATHBRINGER_SCYTHE);
                 output.accept(BLACKENED_ROOT);
                 output.accept(LIDLESS_NEEDLE);
+                output.accept(BELL_OF_GIVING);
+                output.accept(HorizonWeaponsBlocks.PLINTH);
             })
             .build();
 

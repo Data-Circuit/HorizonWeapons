@@ -1,15 +1,25 @@
 package io.github.datacircuit.horizonweapons.mixin;
 
+import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsDataComponents;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsEffects;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.Attackable;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.waypoints.WaypointTransmitter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,8 +27,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.List;
+
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin {
+public abstract class LivingEntityMixin extends Entity implements Attackable, WaypointTransmitter {
+
+    public LivingEntityMixin(EntityType<?> type, Level level) {
+        super(type, level);
+    }
 
     @Shadow
     public abstract boolean hasEffect(Holder<MobEffect> effect);
@@ -28,6 +44,15 @@ public abstract class LivingEntityMixin {
 
     @Shadow
     public abstract double getAttributeValue(Holder<Attribute> attribute);
+
+    @Shadow
+    public abstract float getHealth();
+
+    @Shadow
+    public abstract void setHealth(float health);
+
+    @Shadow
+    public abstract float getMaxHealth();
 
     @Inject(method = "getArmorValue", at = @At("HEAD"), cancellable = true)
     public void getArmorValue(CallbackInfoReturnable<Integer> cir) {
@@ -74,6 +99,34 @@ public abstract class LivingEntityMixin {
     private void stripInertiaOnDamage(ServerLevel level, DamageSource source, float dmg, CallbackInfoReturnable<Boolean> cir) {
         if (this.hasEffect(HorizonWeaponsEffects.INERTIA)) {
             this.removeEffect(HorizonWeaponsEffects.INERTIA);
+        }
+    }
+
+    @Inject(method = "isDeadOrDying", at = @At("HEAD"))
+    private void isDeadOrDying(CallbackInfoReturnable<Boolean> cir) {
+        if ((LivingEntity) (Object) this instanceof Player player) {
+            if (this.getHealth() <= 0) {
+                List<Entity> entities = level().getEntities(null, AABB.ofSize(position(), 60, 60, 60));
+
+                List<Player> players = entities.stream().filter(entity -> entity instanceof Player).map(entity -> (Player) entity).toList();
+
+                boolean isPlayerHoldingActiveBellOfGiving = players.stream().anyMatch(mPlayer -> {
+                    for (InteractionHand hand : InteractionHand.values()) {
+                        if (mPlayer.getItemInHand(hand).has(HorizonWeaponsDataComponents.BELL_OF_GIVING)) {
+                            return mPlayer.getItemInHand(hand).get(HorizonWeaponsDataComponents.BELL_OF_GIVING).isActive();
+                        }
+                    }
+                    return false;
+                });
+
+                if (isPlayerHoldingActiveBellOfGiving) {
+                    setHealth(getMaxHealth());
+                    BlockPos respawnPoint = player.getSleepingPos().get();
+                    if (respawnPoint == null)
+                        respawnPoint = level().getRespawnData().pos();
+                    teleportTo(respawnPoint.getX(), respawnPoint.getY(), respawnPoint.getZ());
+                }
+            }
         }
     }
 }

@@ -28,7 +28,7 @@ import org.jspecify.annotations.Nullable;
 public class PlinthBlock extends BaseEntityBlock {
     public PlinthBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(BlockStateProperties.FACING, Direction.NORTH));
+        registerDefaultState(defaultBlockState().setValue(BlockStateProperties.FACING, Direction.NORTH).setValue(BlockStateProperties.WATERLOGGED, false));
     }
 
     @Override
@@ -77,5 +77,6 @@ public class PlinthBlock extends BaseEntityBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(BlockStateProperties.FACING);
+        builder.add(BlockStateProperties.WATERLOGGED);
     }
 }
