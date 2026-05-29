@@ -1,22 +1,25 @@
 package io.github.datacircuit.horizonweapons.mixin;
 
+import io.github.datacircuit.horizonweapons.HorizonWeapons;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsDataComponents;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsEffects;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.entity.Attackable;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.waypoints.WaypointTransmitter;
@@ -28,6 +31,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
+import java.util.Set;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements Attackable, WaypointTransmitter {
@@ -104,7 +108,7 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, Wa
 
     @Inject(method = "isDeadOrDying", at = @At("HEAD"))
     private void isDeadOrDying(CallbackInfoReturnable<Boolean> cir) {
-        if ((LivingEntity) (Object) this instanceof Player player) {
+        if ((LivingEntity) (Object) this instanceof ServerPlayer player) {
             if (this.getHealth() <= 0) {
                 List<Entity> entities = level().getEntities(null, AABB.ofSize(position(), 60, 60, 60));
 
@@ -121,10 +125,7 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, Wa
 
                 if (isPlayerHoldingActiveBellOfGiving) {
                     setHealth(getMaxHealth());
-                    BlockPos respawnPoint = player.getSleepingPos().get();
-                    if (respawnPoint == null)
-                        respawnPoint = level().getRespawnData().pos();
-                    teleportTo(respawnPoint.getX(), respawnPoint.getY(), respawnPoint.getZ());
+                    teleport(player.findRespawnPositionAndUseSpawnBlock(false, _ -> {}));
                 }
             }
         }
