@@ -1,6 +1,7 @@
 package io.github.datacircuit.horizonweapons.item.weapon;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
+import io.github.datacircuit.horizonweapons.gods.God;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsDamageTypes;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -47,5 +48,10 @@ public class LidlessNeedleWeapon extends HorizonWeapon {
         }
 
         super.hurtEnemy(stack, target, attacker);
+    }
+
+    @Override
+    public God getOriginalOwner() {
+        return God.SECRETS;
     }
 }

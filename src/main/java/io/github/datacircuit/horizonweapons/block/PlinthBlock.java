@@ -2,13 +2,18 @@ package io.github.datacircuit.horizonweapons.block;
 
 import com.mojang.serialization.MapCodec;
 import io.github.datacircuit.horizonweapons.block.entity.PlinthBlockEntity;
+import io.github.datacircuit.horizonweapons.gods.ChosenManager;
+import io.github.datacircuit.horizonweapons.item.weapon.HorizonWeapon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockAndLightGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -32,7 +37,7 @@ public class PlinthBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NonNull MapCodec<? extends BaseEntityBlock> codec() {
         return simpleCodec(PlinthBlock::new);
     }
 
@@ -50,9 +55,16 @@ public class PlinthBlock extends BaseEntityBlock {
         if (!player.getItemInHand(hand).isEmpty() && plinth.isEmpty()) {
             plinth.setItem(0, player.getItemInHand(hand).copy());
             player.getItemInHand(hand).setCount(0);
+            plinth.setChanged();
         } else if (player.getItemInHand(hand).isEmpty() && !plinth.isEmpty()) {
+            Item item = plinth.getItem(0).getItem();
+            if (item instanceof HorizonWeapon weapon) {
+                if (!weapon.getOriginalOwner().equals(ChosenManager.getInstance().getGod(player))) return InteractionResult.PASS;
+            }
+
             player.setItemInHand(hand, plinth.getItem(0).copy());
             plinth.setItem(0, ItemStack.EMPTY);
+            plinth.setChanged();
         }
 
         return InteractionResult.SUCCESS;

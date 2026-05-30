@@ -45,5 +45,26 @@
   "item.horizonweapons.lidless_needle": "Lidless Needle",
   "item.horizonweapons.bell_of_giving.active": "Active",
   "item.horizonweapons.bell_of_giving.inactive": "Inactive",
-  "item.horizonweapons.bell_of_giving": "Bell of Giving"
+  "item.horizonweapons.bell_of_giving": "Bell of Giving",
+
+  "god.horizonweapons.sound": "God of Sound",
+  "god.horizonweapons.sound.chosen": "%1$s was chosen by the God of Sound",
+  "god.horizonweapons.time": "God of Time",
+  "god.horizonweapons.time.chosen": "%1$s was chosen by the God of Time",
+  "god.horzionweapons.grieving": "God of Greiving",
+  "god.horizonweapons.grieving.chosen": "%1$s was chosen by the God of Greiving",
+  "god.horizonweapons.justice": "God of Justice",
+  "god.horizonweapons.justice.chosen": "%1$s was chosen by the God of Justice",
+  "god.horizonweapons.rot": "God of Rot",
+  "god.horizonweapons.rot.chosen": "%1$s was chosen by the God of Rot",
+  "god.horizonweapons.potential": "God of Potential",
+  "god.horizonweapons.potential.chosen": "%1$s was chosen by the God of Potential",
+  "god.horizonweapons.hunger": "God of Hunger",
+  "god.horizonweapons.hunger.chosen": "%1$s was chosen by the God of Hunger",
+  "god.horizonweapons.death": "God of Death",
+  "god.horizonweapons.death.chosen": "%1$s was chosen by the God of Death",
+  "god.horizonweapons.secrets": "God of Secrets",
+  "god.horizonweapons.secrets.chosen": "%1$s was chosen by the God of Secrets",
+  "god.horizonweapons.charity": "God of Charity",
+  "god.horizonweapons.charity.chosen": "%1$s was chosen by the God of Charity"
 }

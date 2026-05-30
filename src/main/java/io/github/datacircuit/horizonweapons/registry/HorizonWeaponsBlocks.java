@@ -16,7 +16,8 @@ import java.util.function.Function;
 
 public class HorizonWeaponsBlocks {
     public static final Block PLINTH =
-            register("plinth", PlinthBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.SMOOTH_STONE_SLAB), true);
+            register("plinth", PlinthBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.SMOOTH_STONE_SLAB)
+                    .explosionResistance(3600000f), true);
 
     private static Block register(String name, Function<BlockBehaviour.Properties, Block> blockFactory, BlockBehaviour.Properties properties, boolean shouldRegisterItem) {
         ResourceKey<Block> blockKey = keyOfBlock(name);

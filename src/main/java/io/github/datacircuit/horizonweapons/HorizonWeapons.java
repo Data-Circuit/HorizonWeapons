@@ -1,7 +1,9 @@
 package io.github.datacircuit.horizonweapons;
 
+import io.github.datacircuit.horizonweapons.gods.ChosenManager;
 import io.github.datacircuit.horizonweapons.registry.*;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
 import net.fabricmc.fabric.api.item.v1.ItemComponentTooltipProviderRegistry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
@@ -22,6 +24,7 @@ public class HorizonWeapons implements ModInitializer {
         HorizonWeaponsBlockEntities.init();
         HorizonWeaponsParticles.init();
         HorizonWeaponsDataComponents.init();
+        ChosenManager.initCommon();
     }
 
     public static Identifier id(String name) {

@@ -1,6 +1,7 @@
 package io.github.datacircuit.horizonweapons.item.weapon;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
+import io.github.datacircuit.horizonweapons.gods.God;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.BlockTags;
@@ -36,5 +37,10 @@ public class DeathbringerScytheWeapon extends HorizonWeapon {
             double factor = Math.log(distance);
             mob.setDeltaMovement(attacker.getHeadLookAngle().scale(factor).reverse());
         }
+    }
+
+    @Override
+    public God getOriginalOwner() {
+        return God.DEATH;
     }
 }

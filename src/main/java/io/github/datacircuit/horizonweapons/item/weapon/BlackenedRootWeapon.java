@@ -1,6 +1,7 @@
 package io.github.datacircuit.horizonweapons.item.weapon;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
+import io.github.datacircuit.horizonweapons.gods.God;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsEffects;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -38,5 +39,10 @@ public class BlackenedRootWeapon extends HorizonWeapon {
 
     protected BlackenedRootWeapon(ToolMaterial material, float attackDamage, float attackSpeed, Properties properties) {
         super(material, attackDamage, attackSpeed, properties);
+    }
+
+    @Override
+    public God getOriginalOwner() {
+        return God.ROT;
     }
 }

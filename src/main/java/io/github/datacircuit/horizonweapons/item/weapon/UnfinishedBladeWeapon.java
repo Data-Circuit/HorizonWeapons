@@ -1,6 +1,7 @@
 package io.github.datacircuit.horizonweapons.item.weapon;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
+import io.github.datacircuit.horizonweapons.gods.God;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.BlockTags;
@@ -26,5 +27,10 @@ public class UnfinishedBladeWeapon extends HorizonWeapon {
 
     protected UnfinishedBladeWeapon(ToolMaterial material, float attackDamage, float attackSpeed, Properties properties) {
         super(material, attackDamage, attackSpeed, properties);
+    }
+
+    @Override
+    public God getOriginalOwner() {
+        return God.POTENTIAL;
     }
 }

@@ -4,8 +4,10 @@
   "package": "io.github.datacircuit.horizonweapons.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "BlockStateBaseMixin",
     "FireworkRocketEntitySuppressor",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "ServerPlayerMixin"
   ],
   "client": [
   ],
