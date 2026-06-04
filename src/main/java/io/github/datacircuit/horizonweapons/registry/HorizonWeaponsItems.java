@@ -1,14 +1,12 @@
 package io.github.datacircuit.horizonweapons.registry;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
-import io.github.datacircuit.horizonweapons.block.PlinthBlock;
-import io.github.datacircuit.horizonweapons.item.BellOfGiving;
+import io.github.datacircuit.horizonweapons.item.weapon.BellOfGivingWeapon;
 import io.github.datacircuit.horizonweapons.item.components.tooltip.BellOfGivingActiveTooltip;
 import io.github.datacircuit.horizonweapons.item.weapon.BlackenedRootWeapon;
 import io.github.datacircuit.horizonweapons.item.weapon.DeathbringerScytheWeapon;
 import io.github.datacircuit.horizonweapons.item.weapon.LidlessNeedleWeapon;
 import io.github.datacircuit.horizonweapons.material.AirDefenceArmorMaterial;
-import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -66,7 +64,7 @@ public class HorizonWeaponsItems {
     );
     public static final Item BELL_OF_GIVING = register(
             "bell_of_giving",
-            BellOfGiving::new,
+            BellOfGivingWeapon::new,
             new Item.Properties()
                     .component(HorizonWeaponsDataComponents.BELL_OF_GIVING,
                             new BellOfGivingActiveTooltip(false))
