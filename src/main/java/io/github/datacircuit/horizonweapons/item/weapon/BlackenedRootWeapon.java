@@ -2,9 +2,12 @@ package io.github.datacircuit.horizonweapons.item.weapon;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
 import io.github.datacircuit.horizonweapons.gods.God;
+import io.github.datacircuit.horizonweapons.item.apis.RotItemApi;
+import io.github.datacircuit.horizonweapons.mixin.RotItemMixin;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsEffects;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Unit;
@@ -34,7 +37,9 @@ public class BlackenedRootWeapon extends HorizonWeapon {
 
     @Override
     public void hurtEnemy(@NonNull ItemStack stack, @NonNull LivingEntity target, @NonNull LivingEntity attacker) {
-        target.addEffect(new MobEffectInstance(HorizonWeaponsEffects.ROT, 400, 0));
+        RotItemApi api = (RotItemApi) (Object) target.getMainHandItem();
+
+        api.effectItem((ServerPlayer) attacker, 400);
     }
 
     protected BlackenedRootWeapon(ToolMaterial material, float attackDamage, float attackSpeed, Properties properties) {
