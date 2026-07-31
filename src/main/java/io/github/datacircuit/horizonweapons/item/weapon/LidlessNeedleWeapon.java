@@ -44,7 +44,7 @@ public class LidlessNeedleWeapon extends HorizonWeapon {
                     attacker
             );
 
-            target.hurtServer(serverLevel, trueDamageSource, 7.f);
+            target.hurtServer(serverLevel, trueDamageSource, 4f);
         }
 
         super.hurtEnemy(stack, target, attacker);
