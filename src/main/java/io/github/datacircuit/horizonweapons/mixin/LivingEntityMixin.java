@@ -113,7 +113,7 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, Wa
     private void isDeadOrDying(CallbackInfoReturnable<Boolean> cir) {
         if ((LivingEntity) (Object) this instanceof ServerPlayer player) {
             if (this.getHealth() <= 0) {
-                List<Entity> entities = level().getEntities(null, AABB.ofSize(position(), 60, 60, 60));
+                List<Entity> entities = level().getEntities(player, AABB.ofSize(position(), 60, 60, 60));
 
                 List<Player> players = entities.stream().filter(entity -> entity instanceof Player).map(entity -> (Player) entity).toList();
 
