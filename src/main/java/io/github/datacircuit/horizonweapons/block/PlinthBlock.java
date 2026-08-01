@@ -6,6 +6,7 @@ import io.github.datacircuit.horizonweapons.gods.ChosenManager;
 import io.github.datacircuit.horizonweapons.item.weapon.HorizonWeapon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -59,7 +60,10 @@ public class PlinthBlock extends BaseEntityBlock {
         } else if (player.getItemInHand(hand).isEmpty() && !plinth.isEmpty()) {
             Item item = plinth.getItem(0).getItem();
             if (item instanceof HorizonWeapon weapon) {
-                if (!weapon.getOriginalOwner().equals(ChosenManager.getInstance().getGod(player))) return InteractionResult.PASS;
+                if (!weapon.getOriginalOwner().equals(ChosenManager.getInstance().getGod(player))) {
+                    player.sendOverlayMessage(Component.literal("You cannot acquire this item"));
+                    return InteractionResult.PASS;
+                }
             }
 
             player.setItemInHand(hand, plinth.getItem(0).copy());

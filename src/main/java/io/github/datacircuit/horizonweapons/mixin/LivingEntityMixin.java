@@ -1,6 +1,7 @@
 package io.github.datacircuit.horizonweapons.mixin;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
+import io.github.datacircuit.horizonweapons.particle.ParticleManager;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsDataComponents;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsEffects;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -10,6 +11,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -124,6 +127,8 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, Wa
                 });
 
                 if (isPlayerHoldingActiveBellOfGiving) {
+                    ParticleManager.bell_of_giving(level(), position());
+                    playSound(SoundEvents.BELL_RESONATE, 2f, 0.7f);
                     setHealth(getMaxHealth());
                     teleport(player.findRespawnPositionAndUseSpawnBlock(false, _ -> {}));
                 }

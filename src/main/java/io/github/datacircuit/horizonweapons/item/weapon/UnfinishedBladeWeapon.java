@@ -4,11 +4,17 @@ import io.github.datacircuit.horizonweapons.HorizonWeapons;
 import io.github.datacircuit.horizonweapons.gods.God;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.ArrayListDeque;
 import net.minecraft.util.Unit;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.AttackRange;
+
+import java.util.Queue;
 
 public class UnfinishedBladeWeapon extends HorizonWeapon {
     public static final ToolMaterial MATERIAL = new ToolMaterial(
@@ -19,6 +25,17 @@ public class UnfinishedBladeWeapon extends HorizonWeapon {
             22,
             TagKey.create(BuiltInRegistries.ITEM.key(), HorizonWeapons.id("repairs_unbreakable"))
     );
+
+    private Queue<ServerPlayer> killList = new ArrayListDeque<>(5);
+
+    @Override
+    public void hurtEnemy(ItemStack itemStack, LivingEntity mob, LivingEntity attacker) {
+        if (attacker instanceof ServerPlayer player) {
+            if (!killList.contains(player)) {
+                killList.add(player);
+            }
+        }
+    }
 
     public UnfinishedBladeWeapon(Properties properties) {
         super(MATERIAL, 0.f, -2.2f, properties.component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
