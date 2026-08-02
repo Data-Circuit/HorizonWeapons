@@ -66,5 +66,18 @@
   "god.horizonweapons.secrets": "God of Secrets",
   "god.horizonweapons.secrets.chosen": "%1$s was chosen by the God of Secrets",
   "god.horizonweapons.charity": "God of Charity",
-  "god.horizonweapons.charity.chosen": "%1$s was chosen by the God of Charity"
+  "god.horizonweapons.charity.chosen": "%1$s was chosen by the God of Charity",
+
+  "itemTooltip.horizonweapons.blackened_root.1": "Grown by the God of Rot.",
+  "itemTooltip.horizonweapons.blackened_root.2": "It decays the very fabric of steel and spirit.",
+  "itemTooltip.horizonweapons.blackened_root.3": "Consumes handheld weapons faster the more times an opponent is hit.",
+  "itemTooltip.horizonweapons.lidless_needle.1": "Forged by the God of Secrets.",
+  "itemTooltip.horizonweapons.lidless_needle.2": "Armor offers no protection against the unblinking eye.",
+  "itemTooltip.horizonweapons.lidless_needle.3": "Does 4 hearts of true damage per hit.",
+  "itemTooltip.horizonweapons.bell_of_giving.1": "Held by the God of Charity.",
+  "itemTooltip.horizonweapons.bell_of_giving.2": "A selfless artifact that cheats death for your allies.",
+  "itemTooltip.horizonweapons.bell_of_giving.3": "When held in a hand, and is active, will let people keep their items on death.",
+  "itemTooltip.horizonweapons.deathbringer_scythe.1": "Forged by the God of Death.",
+  "itemTooltip.horizonweapons.deathbringer_scythe.2": "Escaping its reach is entirely impossible.",
+  "itemTooltip.horizonweapons.deathbringer_scythe.3": "Hold [SHIFT] to drag people towards you when you hit them."
 }

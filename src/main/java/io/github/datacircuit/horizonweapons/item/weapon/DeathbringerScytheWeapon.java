@@ -2,16 +2,22 @@ package io.github.datacircuit.horizonweapons.item.weapon;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
 import io.github.datacircuit.horizonweapons.gods.God;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.AttackRange;
+import net.minecraft.world.item.component.TooltipDisplay;
 import org.jspecify.annotations.NonNull;
+
+import java.util.function.Consumer;
 
 public class DeathbringerScytheWeapon extends HorizonWeapon {
     public static final ToolMaterial MATERIAL = new ToolMaterial(
@@ -37,6 +43,14 @@ public class DeathbringerScytheWeapon extends HorizonWeapon {
             double factor = Math.log(distance);
             mob.setDeltaMovement(attacker.getHeadLookAngle().scale(factor).reverse());
         }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay displayComponent, Consumer<Component> textConsumer, TooltipFlag type) {
+        textConsumer.accept(Component.empty());
+        textConsumer.accept(Component.translatable("itemTooltip.horizonweapons.deathbringer_scythe.1").withStyle(ChatFormatting.LIGHT_PURPLE));
+        textConsumer.accept(Component.translatable("itemTooltip.horizonweapons.deathbringer_scythe.2").withStyle(ChatFormatting.LIGHT_PURPLE));
+        textConsumer.accept(Component.translatable("itemTooltip.horizonweapons.deathbringer_scythe.3").withStyle(ChatFormatting.LIGHT_PURPLE));
     }
 
     @Override
