@@ -2,9 +2,13 @@ package io.github.datacircuit.horizonweapons.mixin;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
 import io.github.datacircuit.horizonweapons.item.apis.RotItemApi;
+import io.github.datacircuit.horizonweapons.item.components.tooltip.RotTooltip;
 import io.github.datacircuit.horizonweapons.item.weapon.HorizonWeapon;
+import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsDataComponents;
 import net.fabricmc.fabric.api.item.v1.FabricItemStack;
 import net.minecraft.core.component.DataComponentHolder;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -36,8 +40,18 @@ public abstract class RotItemMixin implements RotItemApi, DataComponentHolder, I
     @Shadow
     public abstract void setDamageValue(int value);
 
+    @Shadow
+    public abstract <T> @Nullable T set(TypedDataComponent<T> value);
+
+    @Shadow
+    public abstract <T> @Nullable T set(DataComponentType<T> type, @Nullable T value);
+
+    @Shadow
+    public abstract <T> @Nullable T remove(DataComponentType<? extends T> type);
+
     @Unique int rotPowerLevel = 0;
     @Unique int rotRemainingDuration = 0;
+    @Unique int rotAccumulatedDamage = 0;
     @Unique boolean rotActive = false;
     @Unique
     ServerPlayer rotAttacker = null;
@@ -45,13 +59,16 @@ public abstract class RotItemMixin implements RotItemApi, DataComponentHolder, I
     @Inject(method = "inventoryTick", at = @At("HEAD"))
     void rotInventoryTick(Level level, Entity owner, EquipmentSlot slot, CallbackInfo ci) {
         if (rotActive) {
+            set(HorizonWeaponsDataComponents.ROTTING_ITEM, new RotTooltip(rotRemainingDuration, rotAccumulatedDamage));
+
             rotRemainingDuration--;
 
             if (rotRemainingDuration <= 0) {
                 rotActive = false;
+                remove(HorizonWeaponsDataComponents.ROTTING_ITEM);
             } else {
-                HorizonWeapons.LOGGER.info("Damaging item: {}, original: {}, new: {}", getItem(), getDamageValue(), getDamageValue() + rotPowerLevel);
                 applyDamage(getDamageValue() + rotPowerLevel, null, _ -> {});
+                rotAccumulatedDamage += rotPowerLevel;
             }
         }
     }
@@ -60,8 +77,6 @@ public abstract class RotItemMixin implements RotItemApi, DataComponentHolder, I
     public void effectItem(ServerPlayer attacker, int duration) {
         if (rotActive) rotPowerLevel++;
         else {
-            HorizonWeapons.LOGGER.info("Applying rot from: {}, to: {}", attacker.getUUID(), getItem());
-            HorizonWeapons.LOGGER.info("Duration is: {}", duration);
             rotPowerLevel = 1;
             rotRemainingDuration = duration;
             rotActive = true;
