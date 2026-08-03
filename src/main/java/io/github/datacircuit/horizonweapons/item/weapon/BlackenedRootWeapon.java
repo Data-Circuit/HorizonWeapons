@@ -35,7 +35,7 @@ public class BlackenedRootWeapon extends HorizonWeapon {
     );
 
     public BlackenedRootWeapon(Properties properties) {
-        super(MATERIAL, 6.0f, -2.2f,
+        super(MATERIAL, 7.0f, -2.2f,
                 properties.component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
                         .component(DataComponents.ATTACK_RANGE,
                                 new AttackRange(0.f, 3.5f, 0.f, 3.5f, .3f, 1.f)));
