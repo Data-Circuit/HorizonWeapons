@@ -46,6 +46,7 @@
   "item.horizonweapons.bell_of_giving.active": "Active",
   "item.horizonweapons.bell_of_giving.inactive": "Inactive",
   "item.horizonweapons.bell_of_giving": "Bell of Giving",
+  "item.horizonweapons.unfinished_blade":  "Unfinished Blade",
 
   "god.horizonweapons.sound": "God of Sound",
   "god.horizonweapons.sound.chosen": "%1$s was chosen by the God of Sound",
@@ -79,5 +80,8 @@
   "itemTooltip.horizonweapons.bell_of_giving.3": "When held in a hand, and is active, will let people keep their items on death.",
   "itemTooltip.horizonweapons.deathbringer_scythe.1": "Forged by the God of Death.",
   "itemTooltip.horizonweapons.deathbringer_scythe.2": "Escaping its reach is entirely impossible.",
-  "itemTooltip.horizonweapons.deathbringer_scythe.3": "Hold [SHIFT] to drag people towards you when you hit them."
+  "itemTooltip.horizonweapons.deathbringer_scythe.3": "Hold [SHIFT] to drag people towards you when you hit them.",
+  "itemTooltip.horizonweapons.unfinished_blade.1": "Incorrectly Forged by the God of Potential.",
+  "itemTooltip.horizonweapons.unfinished_blade.2": "Its limits are completely unbound.",
+  "itemTooltip.horizonweapons.unfinished_blade.3": "Killing players increases its strength."
 }

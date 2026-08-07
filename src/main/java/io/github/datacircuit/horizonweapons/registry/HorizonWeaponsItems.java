@@ -69,6 +69,11 @@ public class HorizonWeaponsItems {
                     .component(HorizonWeaponsDataComponents.BELL_OF_GIVING,
                             new BellOfGivingActiveTooltip(false))
     );
+    public static final Item UNFINISHED_BLADE = register(
+            "unfinished_blade",
+            BellOfGivingWeapon::new,
+            new Item.Properties()
+    );
 
     public static final ResourceKey<@NotNull CreativeModeTab> HORIZON_WEAPONS_TAB_KEY = ResourceKey.create(
             BuiltInRegistries.CREATIVE_MODE_TAB.key(), Identifier.fromNamespaceAndPath(HorizonWeapons.MOD_ID, "creative_tab")
@@ -85,6 +90,7 @@ public class HorizonWeaponsItems {
                 output.accept(BLACKENED_ROOT);
                 output.accept(LIDLESS_NEEDLE);
                 output.accept(BELL_OF_GIVING);
+                output.accept(UNFINISHED_BLADE);
                 output.accept(HorizonWeaponsBlocks.PLINTH);
             })
             .build();
