@@ -1,11 +1,8 @@
 package io.github.datacircuit.horizonweapons.registry;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
-import io.github.datacircuit.horizonweapons.item.weapon.BellOfGivingWeapon;
+import io.github.datacircuit.horizonweapons.item.weapon.*;
 import io.github.datacircuit.horizonweapons.item.components.tooltip.BellOfGivingActiveTooltip;
-import io.github.datacircuit.horizonweapons.item.weapon.BlackenedRootWeapon;
-import io.github.datacircuit.horizonweapons.item.weapon.DeathbringerScytheWeapon;
-import io.github.datacircuit.horizonweapons.item.weapon.LidlessNeedleWeapon;
 import io.github.datacircuit.horizonweapons.material.AirDefenceArmorMaterial;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.core.Registry;
@@ -71,7 +68,7 @@ public class HorizonWeaponsItems {
     );
     public static final Item UNFINISHED_BLADE = register(
             "unfinished_blade",
-            BellOfGivingWeapon::new,
+            UnfinishedBladeWeapon::new,
             new Item.Properties()
     );
 
@@ -79,7 +76,7 @@ public class HorizonWeaponsItems {
             BuiltInRegistries.CREATIVE_MODE_TAB.key(), Identifier.fromNamespaceAndPath(HorizonWeapons.MOD_ID, "creative_tab")
     );
     public static final CreativeModeTab HORIZON_WEAPONS_TAB = FabricCreativeModeTab.builder()
-            .icon(() -> new ItemStack(HorizonWeaponsItems.LIDLESS_NEEDLE))
+            .icon(() -> new ItemStack(HorizonWeaponsItems.BLACKENED_ROOT))
             .title(Component.translatable("key.category.horizonweapons"))
             .displayItems((params, output) -> {
                 output.accept(AIR_DEFENCE_HELMET);
