@@ -1,0 +1,20 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "horizonweapons:item/unfinished_blade"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "translation": [0, 8.25, 8.75],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "thirdperson_lefthand": {
+      "translation": [0, 8.25, 8.25],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "fixed": {
+      "rotation": [180, 0, 45],
+      "scale": [2, 2, 2]
+    }
+  }
+}
