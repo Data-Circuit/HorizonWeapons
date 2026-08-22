@@ -1,17 +1,10 @@
 package io.github.datacircuit.horizonweapons.mixin;
 
-import io.github.datacircuit.horizonweapons.HorizonWeapons;
 import io.github.datacircuit.horizonweapons.particle.ParticleManager;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsDataComponents;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsEffects;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -22,10 +15,9 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.portal.TeleportTransition;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.waypoints.WaypointTransmitter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,10 +26,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
-import java.util.Set;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity implements Attackable, WaypointTransmitter {
+public abstract class LivingEntityMixin extends Entity implements Attackable {
 
     public LivingEntityMixin(EntityType<?> type, Level level) {
         super(type, level);
@@ -67,8 +58,8 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, Wa
             cir.setReturnValue(Mth.floor(this.getAttributeValue(Attributes.ARMOR)) / 2);
     }
 
-    @Inject(method = "hurtServer", at = @At("HEAD"), cancellable = true)
-    public void hurtServer(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
+    public void hurtServer(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (source.getEntity() instanceof LivingEntity entity && entity.hasEffect(HorizonWeaponsEffects.CONFUSION)) {
             /*
             Level 0 = 20%
@@ -86,7 +77,7 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, Wa
                 percentBlock = 20 + 5 * amplifier;
             }
 
-            boolean shouldBlock = (level.getRandom().nextIntBetweenInclusive(0, 100) < percentBlock);
+            boolean shouldBlock = (level().getRandom().nextIntBetweenInclusive(0, 100) < percentBlock);
 
             if (shouldBlock) cir.setReturnValue(false);
         }
@@ -102,8 +93,8 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, Wa
         }
     }
 
-    @Inject(method = "hurtServer", at = @At("TAIL"))
-    private void stripInertiaOnDamage(ServerLevel level, DamageSource source, float dmg, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "hurt", at = @At("TAIL"))
+    private void stripInertiaOnDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (this.hasEffect(HorizonWeaponsEffects.INERTIA)) {
             this.removeEffect(HorizonWeaponsEffects.INERTIA);
         }
@@ -130,7 +121,8 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, Wa
                     ParticleManager.bell_of_giving(level(), position());
                     playSound(SoundEvents.BELL_RESONATE, 2f, 0.7f);
                     setHealth(getMaxHealth());
-                    teleport(player.findRespawnPositionAndUseSpawnBlock(false, _ -> {}));
+                    DimensionTransition loc = player.findRespawnPositionAndUseSpawnBlock(true, ignored -> {});
+                    changeDimension(loc);
                 }
             }
         }

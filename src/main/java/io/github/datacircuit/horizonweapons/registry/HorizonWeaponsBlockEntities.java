@@ -2,26 +2,24 @@ package io.github.datacircuit.horizonweapons.registry;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
 import io.github.datacircuit.horizonweapons.block.entity.PlinthBlockEntity;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class HorizonWeaponsBlockEntities {
-    public static final BlockEntityType<PlinthBlockEntity> PLINTH_BLOCK_ENTITY =
-            register("plinth", PlinthBlockEntity::new, HorizonWeaponsBlocks.PLINTH);
+    public static final DeferredRegister<BlockEntityType<?>> REGISTER = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, HorizonWeapons.MOD_ID);
 
-    private static <T extends BlockEntity> BlockEntityType<T> register(
-            String name,
-            FabricBlockEntityTypeBuilder.Factory<? extends T> entityFactory,
-            Block... blocks
-    ) {
-        Identifier id = HorizonWeapons.id(name);
-        return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, FabricBlockEntityTypeBuilder.<T>create(entityFactory, blocks).build());
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PlinthBlockEntity>> PLINTH_BLOCK_ENTITY = REGISTER.register(
+            "plinth",
+            () -> BlockEntityType.Builder.of(
+                    PlinthBlockEntity::new,
+                    HorizonWeaponsBlocks.PLINTH.get()
+            ).build(null)
+    );
+
+    public static void init(IEventBus bus) {
+        REGISTER.register(bus);
     }
-
-    public static void init() {}
 }

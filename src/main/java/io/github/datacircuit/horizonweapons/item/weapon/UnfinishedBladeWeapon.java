@@ -4,44 +4,50 @@ import io.github.datacircuit.horizonweapons.HorizonWeapons;
 import io.github.datacircuit.horizonweapons.gods.God;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.util.ArrayListDeque;
-import net.minecraft.util.Unit;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.AttackRange;
-import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.Unbreakable;
+import net.neoforged.neoforge.common.SimpleTier;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Queue;
-import java.util.function.Consumer;
+import java.util.List;
 
 public class UnfinishedBladeWeapon extends HorizonWeapon {
-    public static final ToolMaterial MATERIAL = new ToolMaterial(
+    public static final Tier MATERIAL = new SimpleTier(
             BlockTags.INCORRECT_FOR_WOODEN_TOOL,
             1,
             0f,
             0f,
             22,
-            TagKey.create(BuiltInRegistries.ITEM.key(), HorizonWeapons.id("repairs_unbreakable"))
+            () -> null
     );
 
     public UnfinishedBladeWeapon(Properties properties) {
-        super(MATERIAL, 0.f, -2.2f, properties.component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
-                .component(DataComponents.ATTACK_RANGE, new AttackRange(0.f, 3.5f, 0.f, 3.5f, .3f, 1.f)));
+        super(MATERIAL, 0.f, -2.2f, properties.component(DataComponents.UNBREAKABLE, new Unbreakable(false))
+                .attributes(ItemAttributeModifiers.builder()
+                        .add(
+                                Attributes.ENTITY_INTERACTION_RANGE,
+                                new AttributeModifier(HorizonWeapons.id("unfinished_blade_attack_damage"), 0.5d, AttributeModifier.Operation.ADD_VALUE),
+                                EquipmentSlotGroup.HAND
+                        )
+                        .build()
+                )
+        );
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay displayComponent, Consumer<Component> textConsumer, TooltipFlag type) {
-        textConsumer.accept(Component.empty());
-        textConsumer.accept(Component.translatable("itemTooltip.horizonweapons.unfinished_blade.1").withStyle(ChatFormatting.LIGHT_PURPLE));
-        textConsumer.accept(Component.translatable("itemTooltip.horizonweapons.unfinished_blade.2").withStyle(ChatFormatting.LIGHT_PURPLE));
-        textConsumer.accept(Component.translatable("itemTooltip.horizonweapons.unfinished_blade.3").withStyle(ChatFormatting.LIGHT_PURPLE));
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> components, @NotNull TooltipFlag type) {
+        components.add(Component.empty());
+        components.add(Component.translatable("itemTooltip.horizonweapons.unfinished_blade.1").withStyle(ChatFormatting.LIGHT_PURPLE));
+        components.add(Component.translatable("itemTooltip.horizonweapons.unfinished_blade.2").withStyle(ChatFormatting.LIGHT_PURPLE));
+        components.add(Component.translatable("itemTooltip.horizonweapons.unfinished_blade.3").withStyle(ChatFormatting.LIGHT_PURPLE));
     }
 
     @Override

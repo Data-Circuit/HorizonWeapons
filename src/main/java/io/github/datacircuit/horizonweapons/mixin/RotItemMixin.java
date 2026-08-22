@@ -1,22 +1,14 @@
 package io.github.datacircuit.horizonweapons.mixin;
 
-import io.github.datacircuit.horizonweapons.HorizonWeapons;
 import io.github.datacircuit.horizonweapons.item.apis.RotItemApi;
 import io.github.datacircuit.horizonweapons.item.components.tooltip.RotTooltip;
-import io.github.datacircuit.horizonweapons.item.weapon.HorizonWeapon;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsDataComponents;
-import net.fabricmc.fabric.api.item.v1.FabricItemStack;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -24,90 +16,84 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.function.Consumer;
+import javax.annotation.Nullable;
 
 @Mixin(ItemStack.class)
-public abstract class RotItemMixin implements RotItemApi, DataComponentHolder, ItemInstance, FabricItemStack {
+public abstract class RotItemMixin implements RotItemApi, DataComponentHolder {
+
     @Shadow
-    public abstract void applyDamage(int newDamage, @Nullable ServerPlayer player, Consumer<Item> onBreak);
+    @Nullable
+    public abstract <T> T set(DataComponentType<? super T> component, @org.jetbrains.annotations.Nullable T value);
+
+    @Shadow
+    @Nullable
+    public abstract <T> T remove(DataComponentType<? extends T> component);
+
+    @Shadow
+    public abstract void setDamageValue(int damage);
 
     @Shadow
     public abstract int getDamageValue();
 
-    @Shadow
-    public abstract Item getItem();
-
-    @Shadow
-    public abstract void setDamageValue(int value);
-
-    @Shadow
-    public abstract <T> @Nullable T set(TypedDataComponent<T> value);
-
-    @Shadow
-    public abstract <T> @Nullable T set(DataComponentType<T> type, @Nullable T value);
-
-    @Shadow
-    public abstract <T> @Nullable T remove(DataComponentType<? extends T> type);
-
-    @Unique int rotPowerLevel = 0;
-    @Unique int rotRemainingDuration = 0;
-    @Unique int rotAccumulatedDamage = 0;
-    @Unique boolean rotActive = false;
+    @Unique int horizonWeapons$rotPowerLevel = 0;
+    @Unique int horizonWeapons$rotRemainingDuration = 0;
+    @Unique int horizonWeapons$rotAccumulatedDamage = 0;
+    @Unique boolean horizonWeapons$rotActive = false;
     @Unique
-    ServerPlayer rotAttacker = null;
+    ServerPlayer horizonWeapons$rotAttacker = null;
 
     @Inject(method = "inventoryTick", at = @At("HEAD"))
-    void rotInventoryTick(Level level, Entity owner, EquipmentSlot slot, CallbackInfo ci) {
-        if (rotActive) {
-            set(HorizonWeaponsDataComponents.ROTTING_ITEM, new RotTooltip(rotRemainingDuration, rotAccumulatedDamage));
+    void rotInventoryTick(Level level, Entity entity, int inventorySlot, boolean isCurrentItem, CallbackInfo ci) {
+        if (horizonWeapons$rotActive) {
+            set(HorizonWeaponsDataComponents.ROTTING_ITEM.get(), new RotTooltip(horizonWeapons$rotRemainingDuration, horizonWeapons$rotAccumulatedDamage));
 
-            rotRemainingDuration--;
+            horizonWeapons$rotRemainingDuration--;
 
-            if (rotRemainingDuration <= 0) {
-                rotActive = false;
-                remove(HorizonWeaponsDataComponents.ROTTING_ITEM);
+            if (horizonWeapons$rotRemainingDuration <= 0) {
+                horizonWeapons$rotActive = false;
+                remove(HorizonWeaponsDataComponents.ROTTING_ITEM.get());
             } else {
-                applyDamage(getDamageValue() + rotPowerLevel, null, _ -> {});
-                rotAccumulatedDamage += rotPowerLevel;
+                setDamageValue(getDamageValue() + horizonWeapons$rotPowerLevel);
+                horizonWeapons$rotAccumulatedDamage += horizonWeapons$rotPowerLevel;
             }
         }
     }
 
     @Override
-    public void effectItem(ServerPlayer attacker, int duration) {
-        if (rotActive) rotPowerLevel++;
+    public void horizonWeapons$effectItem(ServerPlayer attacker, int duration) {
+        if (horizonWeapons$rotActive) horizonWeapons$rotPowerLevel++;
         else {
-            rotPowerLevel = 1;
-            rotRemainingDuration = duration;
-            rotActive = true;
-            rotAttacker = attacker;
+            horizonWeapons$rotPowerLevel = 1;
+            horizonWeapons$rotRemainingDuration = duration;
+            horizonWeapons$rotActive = true;
+            horizonWeapons$rotAttacker = attacker;
         }
     }
 
     @Override
-    public int getRemainingDuration() {
-        return rotRemainingDuration;
+    public int horizonWeapons$getRemainingDuration() {
+        return horizonWeapons$rotRemainingDuration;
     }
 
     @Override
-    public void setRemainingDuration(int duration) {
-        rotRemainingDuration = duration;
+    public void horizonWeapons$setRemainingDuration(int duration) {
+        horizonWeapons$rotRemainingDuration = duration;
     }
 
     @Override
-    public void clearEffect() {
-        rotActive = false;
-        rotRemainingDuration = 0;
-        rotPowerLevel = 0;
+    public void horizonWeapons$clearEffect() {
+        horizonWeapons$rotActive = false;
+        horizonWeapons$rotRemainingDuration = 0;
+        horizonWeapons$rotPowerLevel = 0;
     }
 
     @Override
-    public int getEffectPower() {
-        return rotPowerLevel;
+    public int horizonWeapons$getEffectPower() {
+        return horizonWeapons$rotPowerLevel;
     }
 
     @Override
-    public void setEffectPower(int power) {
-        rotPowerLevel = power;
+    public void horizonWeapons$setEffectPower(int power) {
+        horizonWeapons$rotPowerLevel = power;
     }
 }

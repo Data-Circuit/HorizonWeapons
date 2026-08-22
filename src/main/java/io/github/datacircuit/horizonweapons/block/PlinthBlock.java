@@ -4,22 +4,24 @@ import com.mojang.serialization.MapCodec;
 import io.github.datacircuit.horizonweapons.block.entity.PlinthBlockEntity;
 import io.github.datacircuit.horizonweapons.gods.ChosenManager;
 import io.github.datacircuit.horizonweapons.item.weapon.HorizonWeapon;
+import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockAndLightGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -27,9 +29,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class PlinthBlock extends BaseEntityBlock {
     public PlinthBlock(Properties properties) {
@@ -48,9 +50,14 @@ public class PlinthBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected @NonNull InteractionResult useItemOn(@NonNull ItemStack itemStack, @NonNull BlockState state, Level level, @NonNull BlockPos pos, @NonNull Player player, @NonNull InteractionHand hand, @NonNull BlockHitResult hitResult) {
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState blockState, @NotNull BlockEntityType<T> type) {
+        return createTickerHelper(type, HorizonWeaponsBlockEntities.PLINTH_BLOCK_ENTITY.get(), PlinthBlockEntity::tick);
+    }
+
+    @Override
+    protected @NotNull ItemInteractionResult useItemOn(@NonNull ItemStack itemStack, @NonNull BlockState state, Level level, @NonNull BlockPos pos, @NonNull Player player, @NonNull InteractionHand hand, @NonNull BlockHitResult hitResult) {
         if (!(level.getBlockEntity(pos) instanceof PlinthBlockEntity plinth)) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (!player.getItemInHand(hand).isEmpty() && plinth.isEmpty()) {
@@ -61,8 +68,8 @@ public class PlinthBlock extends BaseEntityBlock {
             Item item = plinth.getItem(0).getItem();
             if (item instanceof HorizonWeapon weapon) {
                 if (!weapon.getOriginalOwner().equals(ChosenManager.getInstance().getGod(player))) {
-                    player.sendOverlayMessage(Component.literal("You cannot acquire this item"));
-                    return InteractionResult.PASS;
+                    player.sendSystemMessage(Component.literal("You cannot acquire this item"));
+                    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
                 }
             }
 
@@ -71,18 +78,29 @@ public class PlinthBlock extends BaseEntityBlock {
             plinth.setChanged();
         }
 
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     @Override
     protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return Shapes.or(
-                Block.column(16, 0, 2),
-                Block.column(14, 2, 4),
-                Block.column(18, 4, 6),
-                Block.column(14, 6, 12),
-                Block.column(16, 12, 14)
+                column(16, 0, 2),
+                column(14, 2, 4),
+                column(18, 4, 6),
+                column(14, 6, 12),
+                column(16, 12, 14)
         );
+    }
+
+    @Override
+    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
+        return RenderShape.MODEL;
+    }
+
+    private static VoxelShape column(final double sizeXZ, final double minY, final double maxY) {
+        double halfX = sizeXZ / 2.0f;
+        double halfZ = sizeXZ / 2.0f;
+        return Block.box(8.0 - halfX, minY, 8.0 - halfZ, 8.0 + halfX, maxY, 8.0 + halfZ);
     }
 
     @Override

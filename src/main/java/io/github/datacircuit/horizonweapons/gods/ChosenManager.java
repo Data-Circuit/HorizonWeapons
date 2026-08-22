@@ -1,31 +1,29 @@
 package io.github.datacircuit.horizonweapons.gods;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
-import io.github.datacircuit.horizonweapons.block.entity.PlinthBlockEntity;
-import io.github.datacircuit.horizonweapons.item.weapon.HorizonWeapon;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraft.world.level.saveddata.SavedDataType;
-import org.spongepowered.asm.mixin.injection.Inject;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@EventBusSubscriber
 public class ChosenManager extends SavedData {
     private static ChosenManager INSTANCE;
 
@@ -34,12 +32,21 @@ public class ChosenManager extends SavedData {
             ChosenManager::getGods
     );
 
-    private static final SavedDataType<ChosenManager> TYPE = new SavedDataType<>(
-            HorizonWeapons.id("chosen"),
-            ChosenManager::new,
-            CODEC,
-            null
-    );
+    public static ChosenManager create() {
+        return new ChosenManager();
+    }
+
+    public static ChosenManager load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        ChosenManager data;
+        data = CODEC.decode(RegistryOps.create(NbtOps.INSTANCE, lookupProvider), tag).result().get().getFirst();
+        return data;
+    }
+
+    @Override
+    public @NotNull CompoundTag save(@NotNull CompoundTag compoundTag, HolderLookup.@NotNull Provider provider) {
+        DataResult<Tag> res = CODEC.encode(this, RegistryOps.create(NbtOps.INSTANCE, provider), compoundTag);
+        return (CompoundTag) res.result().get();
+    }
 
     public static void loadInstance(MinecraftServer server) {
         HorizonWeapons.LOGGER.info("Loading data");
@@ -49,7 +56,7 @@ public class ChosenManager extends SavedData {
             INSTANCE = new ChosenManager();
         }
 
-        INSTANCE = level.getDataStorage().computeIfAbsent(TYPE);
+        INSTANCE = level.getDataStorage().computeIfAbsent(new Factory<>(ChosenManager::create, ChosenManager::load), "gods");
     }
 
     private Map<UUID, God> getGods() {
@@ -77,6 +84,7 @@ public class ChosenManager extends SavedData {
 
         godsMapping.put(player.getUUID(), god);
         player.sendSystemMessage(god.getChosenText(player.getDisplayName()));
+        setDirty();
     }
 
     public God getGod(Player player) {
@@ -84,11 +92,14 @@ public class ChosenManager extends SavedData {
         return godsMapping.get(player.getUUID());
     }
 
-    public static void initCommon() {
-        ServerLifecycleEvents.SERVER_STARTED.register(ChosenManager::loadInstance);
-        ServerPlayerEvents.JOIN.register(player -> {
-            HorizonWeapons.LOGGER.info("Attempting to assign god");
-            ChosenManager.getInstance().assign(player);
-        });
+    @SubscribeEvent
+    public static void onServerStarted(ServerStartedEvent event) {
+        ChosenManager.loadInstance(event.getServer());
+    }
+
+    @SubscribeEvent
+    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        HorizonWeapons.LOGGER.info("Attempting to assign god");
+        ChosenManager.getInstance().assign(event.getEntity());
     }
 }

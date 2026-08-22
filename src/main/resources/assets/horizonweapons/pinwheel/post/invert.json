@@ -1,0 +1,9 @@
+{
+  "stages": [
+    {
+      "type": "veil:blit",
+      "shader": "horizonweapons:invert",
+      "in": "minecraft:main"
+    }
+  ]
+}

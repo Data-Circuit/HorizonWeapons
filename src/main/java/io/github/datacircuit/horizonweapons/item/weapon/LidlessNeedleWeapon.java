@@ -5,42 +5,51 @@ import io.github.datacircuit.horizonweapons.gods.God;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsDamageTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.util.Unit;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.AttackRange;
-import net.minecraft.world.item.component.TooltipDisplay;
-import org.jspecify.annotations.NonNull;
+import net.minecraft.world.item.component.*;
+import net.neoforged.neoforge.common.SimpleTier;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Consumer;
+import java.util.List;
 
 public class LidlessNeedleWeapon extends HorizonWeapon {
 
-    public static final ToolMaterial MATERIAL = new ToolMaterial(
+    public static final Tier MATERIAL = new SimpleTier(
             BlockTags.INCORRECT_FOR_WOODEN_TOOL,
             1,
             0f,
             0f,
             22,
-            TagKey.create(BuiltInRegistries.ITEM.key(), HorizonWeapons.id("repairs_unbreakable"))
+            () -> null
     );
 
     public LidlessNeedleWeapon(Properties properties) {
-        super(MATERIAL, 0.f, -2.2f, properties.component(DataComponents.UNBREAKABLE, Unit.INSTANCE)
-                .component(DataComponents.ATTACK_RANGE, new AttackRange(0.f, 3.5f, 0.f, 3.5f, .3f, 1.f)));
+        super(MATERIAL, 0.f, -2.2f, properties.component(DataComponents.UNBREAKABLE, new Unbreakable(false))
+                .attributes(
+                        ItemAttributeModifiers.builder()
+                                .add(
+                                        Attributes.ENTITY_INTERACTION_RANGE,
+                                        new AttributeModifier(HorizonWeapons.id("lidless_needle_attack_range"), 0.5d, AttributeModifier.Operation.ADD_VALUE),
+                                        EquipmentSlotGroup.HAND
+                                )
+                                .build()
+                )
+        );
     }
 
     @Override
-    public void hurtEnemy(@NonNull ItemStack stack, @NonNull LivingEntity target, @NonNull LivingEntity attacker) {
+    public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, LivingEntity attacker) {
         if (!attacker.level().isClientSide() && attacker.level() instanceof ServerLevel serverLevel) {
 
             DamageSource trueDamageSource = new DamageSource(
@@ -50,18 +59,19 @@ public class LidlessNeedleWeapon extends HorizonWeapon {
                     attacker
             );
 
-            target.hurtServer(serverLevel, trueDamageSource, 4f);
+            target.hurt(trueDamageSource, 4f);
         }
 
         super.hurtEnemy(stack, target, attacker);
+        return false;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay displayComponent, Consumer<Component> textConsumer, TooltipFlag type) {
-        textConsumer.accept(Component.empty());
-        textConsumer.accept(Component.translatable("itemTooltip.horizonweapons.lidless_needle.1").withStyle(ChatFormatting.LIGHT_PURPLE));
-        textConsumer.accept(Component.translatable("itemTooltip.horizonweapons.lidless_needle.2").withStyle(ChatFormatting.LIGHT_PURPLE));
-        textConsumer.accept(Component.translatable("itemTooltip.horizonweapons.lidless_needle.3").withStyle(ChatFormatting.LIGHT_PURPLE));
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> tooltipComponents, @NotNull TooltipFlag type) {
+        tooltipComponents.add(Component.empty());
+        tooltipComponents.add(Component.translatable("itemTooltip.horizonweapons.lidless_needle.1").withStyle(ChatFormatting.LIGHT_PURPLE));
+        tooltipComponents.add(Component.translatable("itemTooltip.horizonweapons.lidless_needle.2").withStyle(ChatFormatting.LIGHT_PURPLE));
+        tooltipComponents.add(Component.translatable("itemTooltip.horizonweapons.lidless_needle.3").withStyle(ChatFormatting.LIGHT_PURPLE));
     }
 
     @Override

@@ -1,6 +1,8 @@
 package io.github.datacircuit.horizonweapons.block.entity;
 
 import io.github.datacircuit.horizonweapons.inventory.IInventory;
+import io.github.datacircuit.horizonweapons.item.weapon.DeathbringerScytheWeapon;
+import io.github.datacircuit.horizonweapons.particle.ParticleManager;
 import io.github.datacircuit.horizonweapons.registry.HorizonWeaponsBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -11,18 +13,16 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public class PlinthBlockEntity extends BlockEntity implements IInventory {
     private final NonNullList<ItemStack> items = NonNullList.withSize(1, ItemStack.EMPTY);
 
     public PlinthBlockEntity(BlockPos worldPosition, BlockState blockState) {
-        super(HorizonWeaponsBlockEntities.PLINTH_BLOCK_ENTITY, worldPosition, blockState);
+        super(HorizonWeaponsBlockEntities.PLINTH_BLOCK_ENTITY.get(), worldPosition, blockState);
     }
 
     @Override
@@ -31,15 +31,15 @@ public class PlinthBlockEntity extends BlockEntity implements IInventory {
     }
 
     @Override
-    protected void loadAdditional(@NonNull ValueInput input) {
-        super.loadAdditional(input);
-        ContainerHelper.loadAllItems(input, this.items);
+    protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+        super.loadAdditional(tag, registries);
+        ContainerHelper.loadAllItems(tag, this.items, registries);
     }
 
     @Override
-    protected void saveAdditional(@NonNull ValueOutput output) {
-        super.saveAdditional(output);
-        ContainerHelper.saveAllItems(output, this.items);
+    protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+        super.saveAdditional(tag, registries);
+        ContainerHelper.saveAllItems(tag, this.items, registries);
     }
 
     @Override
@@ -51,12 +51,20 @@ public class PlinthBlockEntity extends BlockEntity implements IInventory {
     }
 
     @Override
-    public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public @NonNull CompoundTag getUpdateTag(HolderLookup.@NonNull Provider registries) {
+    public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registries) {
         return saveWithoutMetadata(registries);
+    }
+
+    public static void tick(Level level, BlockPos pos, BlockState state, PlinthBlockEntity entity) {
+        if (!entity.items.isEmpty()) {
+            if (entity.items.getFirst().getItem().getClass().equals(DeathbringerScytheWeapon.class)) {
+                ParticleManager.bell_of_giving(level, pos.getCenter());
+            }
+        }
     }
 }

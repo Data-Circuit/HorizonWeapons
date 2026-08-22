@@ -2,28 +2,22 @@ package io.github.datacircuit.horizonweapons.registry;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
 import io.github.datacircuit.horizonweapons.effect.*;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class HorizonWeaponsEffects {
-    public static final Holder<MobEffect> VITALITY =
-            Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, HorizonWeapons.id("vitality"),
-                    new VitalityEffect());
-    public static final Holder<MobEffect> CONFUSION =
-            Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, HorizonWeapons.id("confusion"),
-                    new ConfusionEffect());
-    public static final Holder<MobEffect> ANCHOR =
-            Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, HorizonWeapons.id("anchor"),
-                    new AnchorEffect());
-    public static final Holder<MobEffect> INERTIA =
-            Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, HorizonWeapons.id("inertia"),
-                    new InertiaEffect());
-    public static final Holder<MobEffect> ROT =
-            Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, HorizonWeapons.id("rot"),
-                    new RotEffect());
+    public static final DeferredRegister<MobEffect> REGISTER = DeferredRegister.create(Registries.MOB_EFFECT, HorizonWeapons.MOD_ID);
 
-    public static void init() {}
+    public static final DeferredHolder<MobEffect, MobEffect> VITALITY = REGISTER.register("vitality", VitalityEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> CONFUSION = REGISTER.register("confusion", ConfusionEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> ANCHOR = REGISTER.register("anchor", AnchorEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> INERTIA = REGISTER.register("inertia", InertiaEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> ROT = REGISTER.register("rot", RotEffect::new);
+
+    public static void init(IEventBus bus) {
+        REGISTER.register(bus);
+    }
 }

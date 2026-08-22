@@ -2,14 +2,15 @@ package io.github.datacircuit.horizonweapons.item.weapon;
 
 import io.github.datacircuit.horizonweapons.gods.God;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
 
 public abstract class HorizonWeapon extends Item {
 
-    protected final ToolMaterial material;
+    protected final Tier material;
 
-    protected HorizonWeapon(ToolMaterial material, float attackDamage, float attackSpeed, Properties properties) {
-        super(properties.sword(material, attackDamage, attackSpeed));
+    protected HorizonWeapon(Tier material, float attackDamage, float attackSpeed, Properties properties) {
+        super(properties.attributes(SwordItem.createAttributes(material, attackDamage, attackSpeed)));
         this.material = material;
     }
 

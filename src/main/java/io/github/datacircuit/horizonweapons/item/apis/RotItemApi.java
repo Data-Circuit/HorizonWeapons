@@ -1,14 +1,13 @@
 package io.github.datacircuit.horizonweapons.item.apis;
 
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 
 public interface RotItemApi {
-    void effectItem(ServerPlayer attacker, int duration);
-    int getRemainingDuration();
-    void setRemainingDuration(int duration);
-    void clearEffect();
+    void horizonWeapons$effectItem(ServerPlayer attacker, int duration);
+    int horizonWeapons$getRemainingDuration();
+    void horizonWeapons$setRemainingDuration(int duration);
+    void horizonWeapons$clearEffect();
 
-    int getEffectPower();
-    void setEffectPower(int power);
+    int horizonWeapons$getEffectPower();
+    void horizonWeapons$setEffectPower(int power);
 }

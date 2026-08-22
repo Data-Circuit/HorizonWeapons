@@ -2,107 +2,81 @@ package io.github.datacircuit.horizonweapons.registry;
 
 import io.github.datacircuit.horizonweapons.HorizonWeapons;
 import io.github.datacircuit.horizonweapons.item.weapon.*;
-import io.github.datacircuit.horizonweapons.item.components.tooltip.BellOfGivingActiveTooltip;
 import io.github.datacircuit.horizonweapons.material.AirDefenceArmorMaterial;
-import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.equipment.ArmorType;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Function;
+import net.minecraft.world.item.*;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class HorizonWeaponsItems {
-    public static final Item AIR_DEFENCE_HELMET = register(
+    public static final DeferredRegister.Items REGISTER = DeferredRegister.createItems(HorizonWeapons.MOD_ID);
+
+    public static final DeferredItem<Item> AIR_DEFENCE_HELMET = REGISTER.register(
             "air_defence_helmet",
-            Item::new,
-            new Item.Properties().humanoidArmor(AirDefenceArmorMaterial.INSTANCE, ArmorType.HELMET)
-                    .durability(ArmorType.HELMET.getDurability(AirDefenceArmorMaterial.BASE_DURABILITY))
+            () -> new ArmorItem(HorizonWeaponsArmorMaterials.AIR_DEFENSE, ArmorItem.Type.HELMET, new Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(AirDefenceArmorMaterial.BASE_DURABILITY)))
     );
-    public static final Item AIR_DEFENCE_CHESTPLATE = register(
+    public static final DeferredItem<Item> AIR_DEFENCE_CHESTPLATE = REGISTER.register(
             "air_defence_chestplate",
-            Item::new,
-            new Item.Properties().humanoidArmor(AirDefenceArmorMaterial.INSTANCE, ArmorType.CHESTPLATE)
-                    .durability(ArmorType.CHESTPLATE.getDurability(AirDefenceArmorMaterial.BASE_DURABILITY))
+            () -> new ArmorItem(HorizonWeaponsArmorMaterials.AIR_DEFENSE, ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(AirDefenceArmorMaterial.BASE_DURABILITY)))
     );
-    public static final Item AIR_DEFENCE_LEGGINGS = register(
+    public static final DeferredItem<Item> AIR_DEFENCE_LEGGINGS = REGISTER.register(
             "air_defence_leggings",
-            Item::new,
-            new Item.Properties().humanoidArmor(AirDefenceArmorMaterial.INSTANCE, ArmorType.LEGGINGS)
-                    .durability(ArmorType.LEGGINGS.getDurability(AirDefenceArmorMaterial.BASE_DURABILITY))
+            () -> new ArmorItem(HorizonWeaponsArmorMaterials.AIR_DEFENSE, ArmorItem.Type.LEGGINGS, new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(AirDefenceArmorMaterial.BASE_DURABILITY)))
     );
-    public static final Item AIR_DEFENCE_BOOTS = register(
+    public static final DeferredItem<Item> AIR_DEFENCE_BOOTS = REGISTER.register(
             "air_defence_boots",
-            Item::new,
-            new Item.Properties().humanoidArmor(AirDefenceArmorMaterial.INSTANCE, ArmorType.BOOTS)
-                    .durability(ArmorType.BOOTS.getDurability(AirDefenceArmorMaterial.BASE_DURABILITY))
+            () -> new ArmorItem(HorizonWeaponsArmorMaterials.AIR_DEFENSE, ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(AirDefenceArmorMaterial.BASE_DURABILITY)))
     );
-    public static final Item DEATHBRINGER_SCYTHE = register(
+    public static final DeferredItem<Item> DEATHBRINGER_SCYTHE = REGISTER.registerItem(
             "deathbringer_scythe",
             DeathbringerScytheWeapon::new,
             new Item.Properties()
     );
-    public static final Item BLACKENED_ROOT = register(
+    public static final DeferredItem<Item> BLACKENED_ROOT = REGISTER.registerItem(
             "blackened_root",
             BlackenedRootWeapon::new,
             new Item.Properties()
     );
-    public static final Item LIDLESS_NEEDLE = register(
+    public static final DeferredItem<Item> LIDLESS_NEEDLE = REGISTER.registerItem(
             "lidless_needle",
             LidlessNeedleWeapon::new,
             new Item.Properties()
     );
-    public static final Item BELL_OF_GIVING = register(
+    public static final DeferredItem<Item> BELL_OF_GIVING = REGISTER.registerItem(
             "bell_of_giving",
             BellOfGivingWeapon::new,
             new Item.Properties()
-                    .component(HorizonWeaponsDataComponents.BELL_OF_GIVING,
-                            new BellOfGivingActiveTooltip(false))
     );
-    public static final Item UNFINISHED_BLADE = register(
+    public static final DeferredItem<Item> UNFINISHED_BLADE = REGISTER.registerItem(
             "unfinished_blade",
             UnfinishedBladeWeapon::new,
             new Item.Properties()
     );
+    public static final DeferredItem<BlockItem> PLINTH = REGISTER.registerSimpleBlockItem(HorizonWeaponsBlocks.PLINTH);
 
-    public static final ResourceKey<@NotNull CreativeModeTab> HORIZON_WEAPONS_TAB_KEY = ResourceKey.create(
-            BuiltInRegistries.CREATIVE_MODE_TAB.key(), Identifier.fromNamespaceAndPath(HorizonWeapons.MOD_ID, "creative_tab")
-    );
-    public static final CreativeModeTab HORIZON_WEAPONS_TAB = FabricCreativeModeTab.builder()
-            .icon(() -> new ItemStack(HorizonWeaponsItems.BLACKENED_ROOT))
+    public static final DeferredRegister<CreativeModeTab> TAB_REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, HorizonWeapons.MOD_ID);
+
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = TAB_REGISTER.register("creative_tab", () -> CreativeModeTab.builder()
+            .icon(() -> new ItemStack(HorizonWeaponsItems.BLACKENED_ROOT.get()))
             .title(Component.translatable("key.category.horizonweapons"))
             .displayItems((params, output) -> {
-                output.accept(AIR_DEFENCE_HELMET);
-                output.accept(AIR_DEFENCE_CHESTPLATE);
-                output.accept(AIR_DEFENCE_LEGGINGS);
-                output.accept(AIR_DEFENCE_BOOTS);
-                output.accept(DEATHBRINGER_SCYTHE);
-                output.accept(BLACKENED_ROOT);
-                output.accept(LIDLESS_NEEDLE);
-                output.accept(BELL_OF_GIVING);
-                output.accept(UNFINISHED_BLADE);
-                output.accept(HorizonWeaponsBlocks.PLINTH);
-            })
-            .build();
+                output.accept(AIR_DEFENCE_HELMET.get());
+                output.accept(AIR_DEFENCE_CHESTPLATE.get());
+                output.accept(AIR_DEFENCE_LEGGINGS.get());
+                output.accept(AIR_DEFENCE_BOOTS.get());
+                output.accept(DEATHBRINGER_SCYTHE.get());
+                output.accept(BLACKENED_ROOT.get());
+                output.accept(LIDLESS_NEEDLE.get());
+                output.accept(BELL_OF_GIVING.get());
+                output.accept(UNFINISHED_BLADE.get());
+                output.accept(PLINTH.get());
+            }).build());
 
-    public static <T extends Item> T register(String name, Function<Item.Properties, T> itemFactory, Item.Properties settings) {
-        ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, HorizonWeapons.id(name));
-
-        T item = itemFactory.apply(settings.setId(itemKey));
-
-        Registry.register(BuiltInRegistries.ITEM, itemKey, item);
-
-        return item;
-    }
-
-    public static void init() {
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, HORIZON_WEAPONS_TAB_KEY, HORIZON_WEAPONS_TAB);
+    public static void init(IEventBus bus) {
+        REGISTER.register(bus);
+        TAB_REGISTER.register(bus);
     }
 }

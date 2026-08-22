@@ -9,7 +9,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class RotEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(@NonNull ServerLevel serverLevel, @NonNull LivingEntity mob, int amplification) {
+    public boolean applyEffectTick(@NotNull LivingEntity mob, int amplification) {
         if (mob instanceof ServerPlayer player) {
             List<ItemStack> candidates = new ArrayList<>();
 
@@ -52,20 +52,18 @@ public class RotEffect extends MobEffect {
             HorizonWeapons.LOGGER.info("Rot candidates found: {}", items.size());
 
             if (items.isEmpty()) {
-                return super.applyEffectTick(serverLevel, mob, amplification);
+                return super.applyEffectTick(mob, amplification);
             }
 
-            int index = serverLevel.getRandom().nextInt(items.size());
+            int index = mob.level().getRandom().nextInt(items.size());
             ItemStack targetStack = items.get(index);
             HorizonWeapons.LOGGER.info("Rotting item: {}", targetStack);
 
             EquipmentSlot breakSlot = getEquipmentSlotForStack(player, targetStack);
 
-            targetStack.hurtAndBreak(3, serverLevel, player, item -> {
-                player.onEquippedItemBroken(item, breakSlot);
-            });
+            targetStack.hurtAndBreak(3, (ServerLevel) mob.level(), player, item -> player.onEquippedItemBroken(item, breakSlot));
         }
-        return super.applyEffectTick(serverLevel, mob, amplification);
+        return super.applyEffectTick(mob, amplification);
     }
 
     private EquipmentSlot getEquipmentSlotForStack(ServerPlayer player, ItemStack stack) {

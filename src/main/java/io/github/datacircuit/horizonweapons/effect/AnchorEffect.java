@@ -1,13 +1,11 @@
 package io.github.datacircuit.horizonweapons.effect;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class AnchorEffect extends MobEffect {
     public AnchorEffect() {
@@ -20,7 +18,7 @@ public class AnchorEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(@NonNull ServerLevel serverLevel, @NonNull LivingEntity mob, int amplification) {
+    public boolean applyEffectTick(@NotNull LivingEntity mob, int amplification) {
         if (mob instanceof ServerPlayer sp && sp.isFallFlying()) {
             Vec3 velocity = sp.getDeltaMovement();
             Vec3 newVelocity = velocity.scale(1.0 - .2f);

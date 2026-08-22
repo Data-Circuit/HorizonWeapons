@@ -1,3 +1,0 @@
-classTweaker v1 official
-accessible field net/minecraft/world/entity/player/Inventory equipment Lnet/minecraft/world/entity/EntityEquipment;
-accessible method net/minecraft/world/item/ItemStack applyDamage (ILnet/minecraft/server/level/ServerPlayer;Ljava/util/function/Consumer;)V
