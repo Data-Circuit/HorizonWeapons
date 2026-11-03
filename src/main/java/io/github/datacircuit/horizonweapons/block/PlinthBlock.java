@@ -60,6 +60,14 @@ public class PlinthBlock extends BaseEntityBlock {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
+        if (level.isClientSide()) {
+            return ItemInteractionResult.SUCCESS;
+        }
+
+        if (hand == InteractionHand.OFF_HAND) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+
         if (!player.getItemInHand(hand).isEmpty() && plinth.isEmpty()) {
             plinth.setItem(0, player.getItemInHand(hand).copy());
             player.getItemInHand(hand).setCount(0);

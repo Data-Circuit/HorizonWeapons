@@ -63,7 +63,9 @@ public class PlinthBlockEntity extends BlockEntity implements IInventory {
     public static void tick(Level level, BlockPos pos, BlockState state, PlinthBlockEntity entity) {
         if (!entity.items.isEmpty()) {
             if (entity.items.getFirst().getItem().getClass().equals(DeathbringerScytheWeapon.class)) {
-                ParticleManager.bell_of_giving(level, pos.getCenter());
+                if (level.getGameTime() % 120 == 0) {
+                    ParticleManager.bell_of_giving(level, pos.getCenter());
+                }
             }
         }
     }

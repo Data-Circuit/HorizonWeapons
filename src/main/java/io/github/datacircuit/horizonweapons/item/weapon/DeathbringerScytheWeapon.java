@@ -29,7 +29,6 @@ public class DeathbringerScytheWeapon extends HorizonWeapon {
             22,
             () -> null
     );
-
     public DeathbringerScytheWeapon(Properties properties) {
         super(MATERIAL, 7.f, -1f,
                 properties.component(DataComponents.UNBREAKABLE, new Unbreakable(false))
