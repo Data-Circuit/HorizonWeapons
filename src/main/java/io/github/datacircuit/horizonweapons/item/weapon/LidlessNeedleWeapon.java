@@ -58,7 +58,7 @@ public class LidlessNeedleWeapon extends HorizonWeapon {
                             .getOrThrow(HorizonWeaponsDamageTypes.TRUE_DAMAGE_KEY),
                     attacker
             );
-
+            target.invulnerableTime = 0;
             target.hurt(trueDamageSource, 4f);
         }
 
