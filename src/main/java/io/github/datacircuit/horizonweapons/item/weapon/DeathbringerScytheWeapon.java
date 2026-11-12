@@ -29,17 +29,23 @@ public class DeathbringerScytheWeapon extends HorizonWeapon {
             22,
             () -> null
     );
+
+    @Override
+    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
+        var parent = super.getDefaultAttributeModifiers(stack);
+        var b = ItemAttributeModifiers.builder();
+        for (var e : parent.modifiers()) b.add(e.attribute(), e.modifier(), e.slot());
+        b.add(
+                Attributes.ENTITY_INTERACTION_RANGE,
+                new AttributeModifier(HorizonWeapons.id("deathbringer_scythe_attack_range"), 7d, AttributeModifier.Operation.ADD_VALUE),
+                EquipmentSlotGroup.HAND
+        );
+        return b.build();
+    }
+
     public DeathbringerScytheWeapon(Properties properties) {
         super(MATERIAL, 7.f, -1f,
-                properties.component(DataComponents.UNBREAKABLE, new Unbreakable(false))
-                        .attributes(ItemAttributeModifiers.builder()
-                                .add(
-                                        Attributes.ENTITY_INTERACTION_RANGE,
-                                        new AttributeModifier(HorizonWeapons.id("deathbringer_scythe_attack_range"), 7d, AttributeModifier.Operation.ADD_VALUE),
-                                        EquipmentSlotGroup.HAND
-                                )
-                                .build())
-        );
+                properties.component(DataComponents.UNBREAKABLE, new Unbreakable(false)));
     }
 
     @Override
