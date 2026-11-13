@@ -15,9 +15,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.*;
+import net.minecraft.world.item.component.Unbreakable;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.SimpleTier;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,27 +33,29 @@ public class LidlessNeedleWeapon extends HorizonWeapon {
             0f,
             0f,
             22,
-            () -> null
+            () -> Ingredient.EMPTY
     );
 
     public LidlessNeedleWeapon(Properties properties) {
-        super(MATERIAL, 0.f, -2.2f, properties.component(DataComponents.UNBREAKABLE, new Unbreakable(false))
-                .attributes(
-                        ItemAttributeModifiers.builder()
-                                .add(
-                                        Attributes.ENTITY_INTERACTION_RANGE,
-                                        new AttributeModifier(HorizonWeapons.id("lidless_needle_attack_range"), 0.5d, AttributeModifier.Operation.ADD_VALUE),
-                                        EquipmentSlotGroup.HAND
-                                )
-                                .build()
-                )
+        super(
+                MATERIAL,
+                SwordItem.createAttributes(MATERIAL, 0.0f, -2.2f)
+                        .withModifierAdded(
+                                Attributes.ENTITY_INTERACTION_RANGE,
+                                new AttributeModifier(
+                                        HorizonWeapons.id("lidless_needle_attack_range"),
+                                        0.5d,
+                                        AttributeModifier.Operation.ADD_VALUE
+                                ),
+                                EquipmentSlotGroup.MAINHAND
+                        ),
+                properties.component(DataComponents.UNBREAKABLE, new Unbreakable(false))
         );
     }
 
     @Override
-    public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, LivingEntity attacker) {
+    public void postHurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
         if (!attacker.level().isClientSide() && attacker.level() instanceof ServerLevel serverLevel) {
-
             DamageSource trueDamageSource = new DamageSource(
                     serverLevel.registryAccess()
                             .lookupOrThrow(Registries.DAMAGE_TYPE)
@@ -62,8 +66,7 @@ public class LidlessNeedleWeapon extends HorizonWeapon {
             target.hurt(trueDamageSource, 4f);
         }
 
-        super.hurtEnemy(stack, target, attacker);
-        return false;
+        super.postHurtEnemy(stack, target, attacker);
     }
 
     @Override

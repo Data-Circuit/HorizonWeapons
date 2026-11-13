@@ -47,7 +47,7 @@ public class BlackenedRootWeapon extends HorizonWeapon {
     }
 
     @Override
-    public boolean hurtEnemy(@NotNull ItemStack stack, LivingEntity target, @NotNull LivingEntity attacker) {
+    public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker) {
         RotItemApi api = (RotItemApi) (Object) target.getMainHandItem();
 
         api.horizonWeapons$effectItem((ServerPlayer) attacker, 400);

@@ -11,10 +11,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Unbreakable;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.SimpleTier;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,29 +28,28 @@ public class DeathbringerScytheWeapon extends HorizonWeapon {
             0f,
             0f,
             22,
-            () -> null
+            () -> Ingredient.EMPTY
     );
 
-    @Override
-    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
-        var parent = super.getDefaultAttributeModifiers(stack);
-        var b = ItemAttributeModifiers.builder();
-        for (var e : parent.modifiers()) b.add(e.attribute(), e.modifier(), e.slot());
-        b.add(
-                Attributes.ENTITY_INTERACTION_RANGE,
-                new AttributeModifier(HorizonWeapons.id("deathbringer_scythe_attack_range"), 7d, AttributeModifier.Operation.ADD_VALUE),
-                EquipmentSlotGroup.HAND
-        );
-        return b.build();
-    }
-
     public DeathbringerScytheWeapon(Properties properties) {
-        super(MATERIAL, 7.f, -1f,
-                properties.component(DataComponents.UNBREAKABLE, new Unbreakable(false)));
+        super(
+                MATERIAL,
+                SwordItem.createAttributes(MATERIAL, 7.0f, -1.0f)
+                        .withModifierAdded(
+                                Attributes.ENTITY_INTERACTION_RANGE,
+                                new AttributeModifier(
+                                        HorizonWeapons.id("deathbringer_scythe_attack_range"),
+                                        7.0,
+                                        AttributeModifier.Operation.ADD_VALUE
+                                ),
+                                EquipmentSlotGroup.MAINHAND
+                        ),
+                properties.component(DataComponents.UNBREAKABLE, new Unbreakable(false))
+        );
     }
 
     @Override
-    public boolean hurtEnemy(@NotNull ItemStack itemStack, @NotNull LivingEntity mob, LivingEntity attacker) {
+    public boolean hurtEnemy(@NotNull ItemStack itemStack, @NotNull LivingEntity mob, @NotNull LivingEntity attacker) {
         if (attacker.isShiftKeyDown()) {
             double distance = mob.distanceTo(attacker);
             double factor = Math.log(distance);
