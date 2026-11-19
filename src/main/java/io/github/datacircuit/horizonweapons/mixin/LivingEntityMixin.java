@@ -99,32 +99,4 @@ public abstract class LivingEntityMixin extends Entity implements Attackable {
             this.removeEffect(HorizonWeaponsEffects.INERTIA);
         }
     }
-
-    @Inject(method = "isDeadOrDying", at = @At("HEAD"))
-    private void isDeadOrDying(CallbackInfoReturnable<Boolean> cir) {
-        if ((LivingEntity) (Object) this instanceof ServerPlayer player) {
-            if (this.getHealth() <= 0) {
-                List<Entity> entities = level().getEntities(player, AABB.ofSize(position(), 60, 60, 60));
-
-                List<Player> players = entities.stream().filter(entity -> entity instanceof Player).map(entity -> (Player) entity).toList();
-
-                boolean isPlayerHoldingActiveBellOfGiving = players.stream().anyMatch(mPlayer -> {
-                    for (InteractionHand hand : InteractionHand.values()) {
-                        if (mPlayer.getItemInHand(hand).has(HorizonWeaponsDataComponents.BELL_OF_GIVING)) {
-                            return mPlayer.getItemInHand(hand).get(HorizonWeaponsDataComponents.BELL_OF_GIVING).isActive();
-                        }
-                    }
-                    return false;
-                });
-
-                if (isPlayerHoldingActiveBellOfGiving) {
-                    ParticleManager.bell_of_giving(level(), position());
-                    playSound(SoundEvents.BELL_RESONATE, 2f, 0.7f);
-                    setHealth(getMaxHealth());
-                    DimensionTransition loc = player.findRespawnPositionAndUseSpawnBlock(true, ignored -> {});
-                    changeDimension(loc);
-                }
-            }
-        }
-    }
 }
